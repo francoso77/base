@@ -1,0 +1,22 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "usuario": "Frank",
+      "senha": "123",
+      "token": "alsdjfaklsdfjakslj"
+    },
+    {
+      "id": 2,
+      "usuario": "Frank",
+      "senha": "Cursos",
+      "token": "jkdfjkdfjdkfjdkfjf"
+    },
+    {
+      "id": 3,
+      "usuario": "Pedro",
+      "senha": "awxsvwddhadkfj123#2022a",
+      "token": "pppppopopopooo"
+    }
+  ]
+}
