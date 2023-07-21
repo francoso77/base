@@ -1,7 +1,6 @@
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
-import { theme } from '../Config/Theme';
 
 import Login from '../Login/Login';
 import Footer from './Footer';
@@ -11,6 +10,7 @@ import useLayoutState from '../Context/LayoutState';
 import useMensagemState from '../Context/MensagemState';
 import { GlobalContext } from '../Context/GlobalContext';
 import Mensagem from '../Components/Mensagem/Mensagem';
+import theme from '../Config/Theme';
 
 export default function Layout() {
 
