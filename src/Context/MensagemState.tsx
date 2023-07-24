@@ -13,14 +13,16 @@ export interface MensagemStateInterface {
   titulo: string,
   mensagem: string,
   tipo: AlertColor,
-  modal: boolean
+  modal: boolean,
+  loading: boolean
 }
 export const MensagemStatePadrao: MensagemStateInterface = {
   exibir: false,
   titulo: '',
   mensagem: 'Mensagem a ser exibida',
   tipo: MensagemTipo.Info,
-  modal: false
+  modal: false,
+  loading: false
 }
 
 export default function useMensagemState() {

@@ -1,19 +1,29 @@
-import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { createTheme } from "@mui/material";
 
-// A custom theme for this app
-const theme = createTheme({
+export const THEME = createTheme({
+  menu: {
+    corIcone: '#0f2770',
+    tamanhoIcone: 40
+  },
   palette: {
     primary: {
-      main: '#556cd6',
-    },
-    secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: red.A400,
-    },
-  },
+      main: '#0f2770'
+    }
+  }
 });
 
-export default theme;
+declare module '@mui/material/styles' {
+  interface Theme {
+    menu: {
+      corIcone: string;
+      tamanhoIcone: number;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    menu?: {
+      corIcone?: string;
+      tamanhoIcone?: number;
+    };
+  }
+}

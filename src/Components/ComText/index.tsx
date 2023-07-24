@@ -20,7 +20,10 @@ interface mapKeyPressInterface {
   key: string
   onKey: () => void
 }
-
+interface StateSenha {
+  Senha: string;
+  MostarSenha: boolean;
+}
 interface ComTextInterface {
   label: string,
   disabled?: boolean,
@@ -54,6 +57,11 @@ export default function ComText({
   erros = {}
 }: ComTextInterface) {
 
+  const [valuesSenha, setValuesSenha] = React.useState<StateSenha>({
+    Senha: '',
+    MostarSenha: false,
+  })
+
   const onKey = (key: string) => {
     if (mapKeyPress.length > 0) {
       let encontrou: boolean = false
@@ -73,6 +81,10 @@ export default function ComText({
           <IconButton sx={{ margin: 0, padding: 0 }} onClick={() => {
             if (onclick) {
               onclick()
+              setValuesSenha({
+                ...valuesSenha,
+                MostarSenha: !valuesSenha.MostarSenha,
+              });
             }
           }}>
             <Icon sx={{ margin: 0, padding: 0 }}>{icone}</Icon>
@@ -99,7 +111,7 @@ export default function ComText({
           type={type}
           onChange={(e) => setState({ ...dados, [field]: e.target.value })}
           endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
-          startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
+          startAdornment={exibirIcone('end', iconeStart, onClickIconeStart)}
           onKeyDown={(ev) => onKey(ev.key)}
         />
         <Condicional condicao={typeof erros[field] !== 'undefined'}>

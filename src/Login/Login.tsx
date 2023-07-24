@@ -1,71 +1,154 @@
-import { useState, useContext } from 'react';
-import { URL_SERVIDOR } from '../Config/Setup';
-import ComText from '../Components/ComText';
-import * as Styled from './styles'
+import { useContext, useState } from 'react'
+import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { Paper, Switch } from '@mui/material';
 import { GlobalContext, GlobalContextInterface } from '../Context/GlobalContext';
-import { Button } from '@mui/material';
-import { MensagemTipo } from '../Context/MensagemState';
+import ApiCls from '../Services/ApiCls';
+import MenuCls from '../Layout/MenuCls';
+import Copyright from '../Layout/Copyright';
+import ComText from '../Components/ComText';
+
 
 interface LoginInterface {
-  usuario: string,
-  senha: string,
-  token: string,
+    login: string
+    senha: string
 }
 
 export default function Login() {
 
-  const { mensagemState, setMensagemState } = useContext(GlobalContext) as GlobalContextInterface
+    const GlobalContexto = (useContext(GlobalContext) as GlobalContextInterface)
 
-  const setLoginState = (useContext(GlobalContext) as GlobalContextInterface).setLoginState
+    const { mensagemState, setMensagemState } = useContext(GlobalContext) as GlobalContextInterface
 
-  const [usuarioState, setUsuarioState] = useState<LoginInterface>({
-    usuario: '',
-    senha: '',
-    token: ''
-  })
+    const [usuarioState, setUsuarioState] = useState<LoginInterface>({ login: '', senha: '' })
 
-  const logar = () => {
+    const [exibirSenhaState, setExibirSenhaState] = useState(false)
 
-    let url = URL_SERVIDOR.concat('/usuarios?usuario=')
-    url = url.concat(usuarioState.usuario)
-    url = url.concat('&senha=')
-    url = url.concat(usuarioState.senha)
-    console.log(url)
-    setTimeout(() => {
+    const handleExibirSenha = () => {
+        setExibirSenhaState(!exibirSenhaState)
+    }
 
-      fetch(url).then(rs => {
-        return rs.json()
-      }).then((rs: LoginInterface[]) => {
+    const clsApi = new ApiCls()
 
-        if (rs.length > 0) {
+    const dados = {
+        "login": "Frank",
+        "senha": "123"
+    }
 
-          setLoginState({
-            logado: true,
-            usuario: rs[0].usuario,
-            token: rs[0].token
-          })
-          console.log('logado')
-        } else {
-          console.log('verifique o usuario e a senha')
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Verifique Usuário / Senha', tipo: MensagemTipo.Error })
-        }
-      }).catch(e => {
-        console.log('Erro no Fetch....', e)
-        setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro de conexão com o Servidor', tipo: MensagemTipo.Error })
-      }
-      )
-    }, 500)
+    const logar = () => {
 
-  }
-  return (
-    <>
-      <section>
-        <Styled.Container>
-          <ComText label='Usuário' dados={usuarioState} field='usuario' setState={setUsuarioState} type='text' />
-          <ComText label='Senha' dados={usuarioState} field='senha' setState={setUsuarioState} type='password' />
-          <Button  sx={{ my: 1, py: 0, height: 40, background: '#dddd' }}  onClick={() => logar()}>Log in</Button>
-        </Styled.Container>
-      </section>
-    </>
-  )
+
+        clsApi.post<any>('/Usuario/AuthenticateUser', dados, 'Login', GlobalContexto.mensagemState, GlobalContexto.setMensagemState).then(rs => {
+
+            const clsMenu = new MenuCls(rs.MenuDto)
+
+            GlobalContexto.setLoginState({ ...GlobalContexto.loginState, logado: true })
+            GlobalContexto.setLayoutState({ ...GlobalContexto.layoutState, opcoesMenu: clsMenu.Menu })
+
+
+        })
+    }
+    /*   if (rs.token && rs.token.length > 0) {
+
+           const clsMenu = new MenuCls(rs.MenuDto)
+
+           GlobalContexto.setLoginState({ ...GlobalContexto.loginState, logado: true })
+           GlobalContexto.setLayoutState({ ...GlobalContexto.layoutState, opcoesMenu: clsMenu.Menu })
+           console.log(JSON.stringify(clsMenu.Menu))
+       } else {
+
+           GlobalContexto.setMensagemState({
+               ...GlobalContexto.mensagemState,
+               exibir: true,
+               mensagem: 'Verifique Usuário / Senha',
+               tipo: MensagemTipo.Erro
+           })
+       }
+   }).catch((erro) => {
+
+       console.log(erro)
+       GlobalContexto.setMensagemState({
+           ...GlobalContexto.mensagemState,
+           exibir: true,
+           mensagem: 'Erro de conexão com o Servidor',
+           tipo: MensagemTipo.Erro
+       })
+   })
+}*/
+    return (
+        <>
+            <Grid
+                container
+                justifyContent='center'
+                alignItems='center'
+                height='100vh'
+            >
+                <Grid item xs={10} sm={8} md={6} lg={4}>
+                    <Paper>
+                        <Box
+                            sx={{ backgroundColor: 'primary.main', padding: 2 }}
+                            textAlign='center'
+                        >
+                            <img src="img/logoFundoBranco.png" width={200} alt="Inova Manager" />
+                            <Typography component="p" variant="h6" color="white">
+                                Versão
+                                <Typography component="span" variant="body1" color="white">
+                                    &nbsp;1.00 -&nbsp;
+                                    <Typography component="span" variant="h6" color="white">
+                                        Release
+                                        <Typography component="span" variant="body1" color="white">
+                                            &nbsp;00001/01
+                                        </Typography>
+                                    </Typography>
+                                </Typography>
+                            </Typography>
+                        </Box>
+                        <Box
+                            sx={{ backgroundColor: 'white', padding: 2, mx: 5 }}
+                            textAlign='center'
+                        >
+                            <Typography variant="h4" fontFamily='sans-serif' fontWeight='bolder' color="primary.main">
+                                Nome da Empresa
+                            </Typography>
+
+                            <ComText
+                                dados={usuarioState}
+                                field='login'
+                                label='Usuário'
+                                setState={setUsuarioState}
+                            //valida='txt'
+                            />
+
+                            <ComText
+                                dados={usuarioState}
+                                field='senha'
+                                label='Senha'
+                                type={exibirSenhaState ? "text" : "password"}
+                                setState={setUsuarioState}
+                                iconeStart='visibility'
+                                iconeEnd='visibility_off'
+                                onClickIconeStart={() => exibirSenhaState}
+                                onClickIconeEnd={() => exibirSenhaState}
+                            //valida='txt'
+                            />
+
+                            <FormControlLabel
+                                control={
+                                    <Switch checked={exibirSenhaState} onChange={handleExibirSenha} />
+                                }
+                                label="Exibir Senha"
+                                sx={{ width: '100%', my: 1 }}
+                            />
+
+                            <Button variant='contained' onClick={() => logar()} sx={{ width: '100%', mb: 3 }}>Logar</Button>
+                            <Copyright />
+                        </Box>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </>
+    )
 }

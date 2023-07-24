@@ -1,17 +1,18 @@
 import { useState } from 'react'
+import { EstruturaMenuInterface } from '../Layout/MenuCls'
 
 export interface LayoutStateInterface {
   aliasDB: string,
   versaoCompleta: string,
   exibirMenu: boolean,
-  opcoesDeMenu: string[]
+  opcoesMenu: EstruturaMenuInterface[]
 }
 export default function useLayoutState() {
   const [layoutState, setLayoutState] = useState<LayoutStateInterface>({
     aliasDB: '',
     versaoCompleta: '',
     exibirMenu: false,
-    opcoesDeMenu: []
+    opcoesMenu: []
   })
   return { layoutState, setLayoutState }
 }

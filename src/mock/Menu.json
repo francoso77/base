@@ -1,24 +1,4 @@
 {
-  "usuarios": [
-    {
-      "id": 1,
-      "usuario": "Frank",
-      "senha": "123",
-      "token": "123"
-    },
-    {
-      "id": 2,
-      "usuario": "Frank",
-      "senha": "Cursos",
-      "token": "123"
-    },
-    {
-      "id": 3,
-      "usuario": "Pedro",
-      "senha": "awxsvwddhadkfj123#2022a",
-      "token": "123"
-    }
-  ],
   "MenuDto": [
     {
       "id": "Inicio",

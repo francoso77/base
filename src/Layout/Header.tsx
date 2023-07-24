@@ -20,24 +20,24 @@ const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export default function Header() {
 
-  //const { layoutState, setLayoutState } = React.useContext(GlobalContext) as GlobalContextInterface
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const { layoutState, setLayoutState } = React.useContext(GlobalContext) as GlobalContextInterface
+  //const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const { mensagemState, setMensagemState } = React.useContext(GlobalContext) as GlobalContextInterface
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  // const toggleDrawer = () => {
-  //   setLayoutState({ ...layoutState, exibirMenu: !layoutState.exibirMenu })
+  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElUser(event.currentTarget);
   // };
 
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
+
+  const toggleDrawer = () => {
+    setLayoutState({ ...layoutState, exibirMenu: !layoutState.exibirMenu })
+  };
+
   const fecharLoading = () => {
-    setMensagemState({ ...mensagemState, exibir: false })
+    setMensagemState({ ...mensagemState, exibir: false, loading: false, modal: false })
   }
 
   return (
@@ -47,7 +47,7 @@ export default function Header() {
           <IconButton
             color='inherit'
             aria-label="open drawer"
-            onClick={handleOpenUserMenu}
+            onClick={toggleDrawer}
             edge="start"
             sx={{ mr: 2 }}
           >
@@ -57,21 +57,6 @@ export default function Header() {
             <img src="img/logoFundoBranco.png" width={150} alt="Logotipo de empresa" />
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorElUser}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>My account</MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>Logout</MenuItem>
-            </Menu>
-          </Box>
         </Toolbar>
       </AppBar>
       <Offset />

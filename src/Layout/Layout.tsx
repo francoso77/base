@@ -2,7 +2,6 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { Outlet } from 'react-router-dom';
 
-import Login from '../Login/Login';
 import Footer from './Footer';
 import Header from './Header';
 import useLoginState from '../Context/LoginState';
@@ -10,7 +9,10 @@ import useLayoutState from '../Context/LayoutState';
 import useMensagemState from '../Context/MensagemState';
 import { GlobalContext } from '../Context/GlobalContext';
 import Mensagem from '../Components/Mensagem/Mensagem';
-import theme from '../Config/Theme';
+import { THEME } from '../Config/Theme';
+import Menu from './Menu';
+import Loading from './Loading';
+import Login from '../Login/Login';
 
 export default function Layout() {
 
@@ -21,7 +23,7 @@ export default function Layout() {
   return (
     <>
       <CssBaseline />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={THEME}>
         <GlobalContext.Provider value={{
           loginState: loginState,
           setLoginState: setLoginState,
@@ -31,16 +33,19 @@ export default function Layout() {
           setMensagemState: setMensagemState
         }}>
           <>
-          <Mensagem />
+            <Mensagem />
 
             {loginState.logado ?
               <>
                 <Header />
                 <Outlet />
                 <Footer />
+                <Menu />
+                <Loading />
               </> :
               <>
                 <Login />
+                <Loading />
               </>
             }
 
