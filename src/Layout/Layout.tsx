@@ -20,7 +20,6 @@ export default function Layout() {
 
   return (
     <>
-      <h1>teste</h1>
       <CssBaseline />
       <ThemeProvider theme={theme}>
         <GlobalContext.Provider value={{
@@ -32,9 +31,10 @@ export default function Layout() {
           setMensagemState: setMensagemState
         }}>
           <>
+          <Mensagem />
+
             {loginState.logado ?
               <>
-                <Mensagem />
                 <Header />
                 <Outlet />
                 <Footer />

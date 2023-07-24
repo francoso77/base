@@ -8,9 +8,9 @@ export interface LoginStateInterface {
 
 export default function useLoginState() {
   const [loginState, setLoginState] = useState<LoginStateInterface>({
-    usuario: '',
-    token: '',
-    logado: false
+    usuario: 'Frank',
+    token: '123',
+    logado: true,
   })
   return { loginState, setLoginState }
 }

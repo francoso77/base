@@ -26,10 +26,10 @@ interface ComTextInterface {
   disabled?: boolean,
   type?: string,
   placeholder?: string,
-  dados?: { [key: string]: string | number | readonly string[] | undefined | any },
+  dados: { [key: string]: string | number | readonly string[] | undefined | any },
   erros?: { [key: string]: string },
   field: string,
-  setState?: React.Dispatch<React.SetStateAction<any>>
+  setState: React.Dispatch<React.SetStateAction<any>>
   iconeEnd?: string,
   onClickIconeEnd?: () => void
   iconeStart?: string
@@ -92,12 +92,12 @@ export default function ComText({
           {label}
         </Typography>
         <OutlinedInput
-          //value={dados[field]}
-          //sx={{ my: 0, py: 0, height: 40 }}
+          value={dados[field]}
+          sx={{ my: 0, py: 0, height: 40 }}
           placeholder={placeholder}
           disabled={disabled}
           type={type}
-          //onChange={(e) => setState({ ...dados, [field]: e.target.value })}
+          onChange={(e) => setState({ ...dados, [field]: e.target.value })}
           endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
           startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
           onKeyDown={(ev) => onKey(ev.key)}
