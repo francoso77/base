@@ -128,22 +128,21 @@ export default function Login() {
                                 label='Senha'
                                 type={exibirSenhaState ? "text" : "password"}
                                 setState={setUsuarioState}
-                                iconeStart='visibility'
-                                iconeEnd='visibility_off'
-                                onClickIconeStart={() => exibirSenhaState}
-                                onClickIconeEnd={() => exibirSenhaState}
+                                //iconeStart='visibility'
+                                iconeEnd={exibirSenhaState ? 'visibility_off' : 'visibility'}
+                                onClickIconeEnd={handleExibirSenha}
                             //valida='txt'
                             />
 
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 control={
                                     <Switch checked={exibirSenhaState} onChange={handleExibirSenha} />
                                 }
                                 label="Exibir Senha"
                                 sx={{ width: '100%', my: 1 }}
-                            />
+                            /> */}
 
-                            <Button variant='contained' onClick={() => logar()} sx={{ width: '100%', mb: 3 }}>Logar</Button>
+                            <Button variant='contained' onClick={() => logar()} sx={{ width: '100%', mb: 3, mt: 3 }}>Logar</Button>
                             <Copyright />
                         </Box>
                     </Paper>
