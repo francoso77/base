@@ -81,10 +81,6 @@ export default function ComText({
           <IconButton sx={{ margin: 0, padding: 0 }} onClick={() => {
             if (onclick) {
               onclick()
-              setValuesSenha({
-                ...valuesSenha,
-                MostarSenha: !valuesSenha.MostarSenha,
-              });
             }
           }}>
             <Icon sx={{ margin: 0, padding: 0 }}>{icone}</Icon>
