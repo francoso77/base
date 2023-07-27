@@ -21,44 +21,54 @@
   ],
   "person": [
     {
-      "id": 1,
+      "idPerson": 1,
       "name": "Online Sites",
-      "category": 1
+      "category": 0
     },
     {
-      "id": 2,
+      "idPerson": 2,
       "name": "Cemig",
-      "category": 1
+      "category": 0
     },
     {
-      "id": 3,
+      "idPerson": 3,
       "name": "Simples",
-      "category": 1
+      "category": 0
     },
     {
-      "id": 4,
+      "idPerson": 4,
       "name": "Salários",
-      "category": 1
+      "category": 0
     },
     {
-      "id": 5,
+      "idPerson": 5,
       "name": "Totvs",
-      "category": 1
+      "category": 0
     },
     {
-      "id": 6,
+      "idPerson": 6,
       "name": "Gpc",
+      "category": 0
+    },
+    {
+      "idPerson": 7,
+      "name": "Ronaldo Adriano",
       "category": 1
     },
     {
-      "id": 7,
-      "name": "Ronaldo Adriano",
-      "category": 2
+      "idPerson": 8,
+      "name": "Nova Serrana Couros",
+      "category": 1
     },
     {
-      "id": 1,
-      "name": "Nova Serrana Couros",
-      "category": 2
+      "idPerson": 9,
+      "name": "teste",
+      "category": 1
+    },
+    {
+      "idPerson": 10,
+      "name": "tegdgdgsdfgsdfgfdg",
+      "category": 1
     }
   ],
   "MenuDto": [
