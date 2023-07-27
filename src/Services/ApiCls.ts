@@ -23,8 +23,8 @@ export default class ApiCls {
             body: JSON.stringify(body)
         }
 
-        setMensagemState({ ...mensagemState, mensagem: mensagem })
-        //setMensagemState({...mensagemState, loading: true, modal: true})
+        //setMensagemState({ ...mensagemState, mensagem: mensagem })
+        //setMensagemState({...mensagemState, mensagem: mensagem, loading: true, modal: true})
         /*
 // console.clear()
 console.log( url )

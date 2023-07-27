@@ -2,8 +2,7 @@ import React from 'react'
 import { createBrowserRouter } from 'react-router-dom';
 import Home from '../Home/Home';
 import ErroAplicacao from '../Layout/ErroAplicacao';
-import { Clientes } from '../views/Clientes/Clientes';
-import { Fornecedores } from '../views/Fornecedores/Fornecedores';
+import Person from '../views/Person/Person';
 import ErroNavegacao from '../Layout/ErroNavegacao';
 import Layout from '../Layout/Layout';
 
@@ -14,15 +13,10 @@ export const router = createBrowserRouter([
     errorElement: <ErroAplicacao />,
     children: [
       {
-        path: "Clientes",
-        element: <Clientes />,
+        path: "person",
+        element: <Person />,
         errorElement: <ErroAplicacao />
       },
-      {
-        path: "Fornecedores",
-        element: <Fornecedores />,
-        errorElement: <ErroAplicacao />
-      }
     ],
   },
   {

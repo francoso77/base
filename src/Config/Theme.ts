@@ -2,12 +2,12 @@ import { createTheme } from "@mui/material";
 
 export const THEME = createTheme({
   menu: {
-    corIcone: '#0f2770',
+    corIcone: '#e15244',
     tamanhoIcone: 40
   },
   palette: {
     primary: {
-      main: '#0f2770'
+      main: '#e15244'
     }
   }
 });

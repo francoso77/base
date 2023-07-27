@@ -1,10 +1,9 @@
 import { useContext, useState } from 'react'
 import Button from '@mui/material/Button';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Paper, Switch } from '@mui/material';
+import { Paper } from '@mui/material';
 import { GlobalContext, GlobalContextInterface } from '../Context/GlobalContext';
 import ApiCls from '../Services/ApiCls';
 import MenuCls from '../Layout/MenuCls';
@@ -40,6 +39,7 @@ export default function Login() {
 
     const logar = () => {
 
+        setMensagemState({ ...mensagemState, loading: true })
 
         clsApi.post<any>('/Usuario/AuthenticateUser', dados, 'Login', GlobalContexto.mensagemState, GlobalContexto.setMensagemState).then(rs => {
 
@@ -92,7 +92,7 @@ export default function Login() {
                             sx={{ backgroundColor: 'primary.main', padding: 2 }}
                             textAlign='center'
                         >
-                            <img src="img/logoFundoBranco.png" width={200} alt="Inova Manager" />
+                            <img src="img/logomarca.png" width={150} alt="JB Textil" />
                             <Typography component="p" variant="h6" color="white">
                                 Versão
                                 <Typography component="span" variant="body1" color="white">
@@ -111,7 +111,7 @@ export default function Login() {
                             textAlign='center'
                         >
                             <Typography variant="h4" fontFamily='sans-serif' fontWeight='bolder' color="primary.main">
-                                Nome da Empresa
+                                JB Textil
                             </Typography>
 
                             <ComText

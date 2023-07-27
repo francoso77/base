@@ -19,6 +19,48 @@
       "token": "123"
     }
   ],
+  "person": [
+    {
+      "id": 1,
+      "name": "Online Sites",
+      "category": 1
+    },
+    {
+      "id": 2,
+      "name": "Cemig",
+      "category": 1
+    },
+    {
+      "id": 3,
+      "name": "Simples",
+      "category": 1
+    },
+    {
+      "id": 4,
+      "name": "Salários",
+      "category": 1
+    },
+    {
+      "id": 5,
+      "name": "Totvs",
+      "category": 1
+    },
+    {
+      "id": 6,
+      "name": "Gpc",
+      "category": 1
+    },
+    {
+      "id": 7,
+      "name": "Ronaldo Adriano",
+      "category": 2
+    },
+    {
+      "id": 1,
+      "name": "Nova Serrana Couros",
+      "category": 2
+    }
+  ],
   "MenuDto": [
     {
       "id": "Inicio",

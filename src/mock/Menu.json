@@ -26,7 +26,7 @@
       "parentId": "Cadastros",
       "descricao": "Bairros",
       "icon": "location_on",
-      "path": ""
+      "path": "Person"
     },
     {
       "id": "Cidades",

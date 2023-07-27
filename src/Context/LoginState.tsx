@@ -9,7 +9,7 @@ export interface LoginStateInterface {
 export default function useLoginState() {
   const [loginState, setLoginState] = useState<LoginStateInterface>({
     usuario: '',
-    token: '2131313132',
+    token: '2131sdgdfgdfgf313132',
     logado: false,
   })
   return { loginState, setLoginState }

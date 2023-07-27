@@ -9,7 +9,7 @@ export interface LayoutStateInterface {
 }
 export default function useLayoutState() {
   const [layoutState, setLayoutState] = useState<LayoutStateInterface>({
-    aliasDB: '',
+    aliasDB: 'postgreSQL',
     versaoCompleta: '',
     exibirMenu: false,
     opcoesMenu: []

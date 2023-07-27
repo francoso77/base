@@ -54,7 +54,7 @@ export default function Header() {
             <MenuIcon sx={{ width: 32, height: 32 }} />
           </IconButton>
           <Box sx={{ flexGrow: 1 }}>
-            <img src="img/logoFundoBranco.png" width={150} alt="Logotipo de empresa" />
+            <img src="img/logomarca.png" width={80} alt="logo tipo da empresa JB Textl" />
           </Box>
 
         </Toolbar>

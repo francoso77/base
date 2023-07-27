@@ -17,7 +17,7 @@ export default function Footer() {
                 color="primary"
                 sx={{ top: 'auto', bottom: 0, maxHeigth: 25 }}
             >
-                <Toolbar>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <Typography variant="h6">
                         {layoutState.aliasDB}
                     </Typography>

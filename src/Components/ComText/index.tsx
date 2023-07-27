@@ -1,5 +1,5 @@
 import React from 'react';
-import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormControl, TextField } from '@mui/material';
+import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormControl, TextField, FormControlLabel, Checkbox } from '@mui/material';
 import * as Styled from './styles';
 import Condicional from '../Condicional/Condicional';
 
@@ -38,7 +38,8 @@ interface ComTextInterface {
   iconeStart?: string
   onClickIconeStart?: () => void
   mapKeyPress?: Array<mapKeyPressInterface>
-  tipo?: 'text' | 'checkbox'
+  tipo?: 'text' | 'checkbox',
+  valida?: string,
 }
 export default function ComText({
   label,
@@ -54,7 +55,8 @@ export default function ComText({
   onClickIconeEnd = () => { },
   mapKeyPress = [],
   tipo = 'text',
-  erros = {}
+  erros = {},
+  valida = ''
 }: ComTextInterface) {
 
   const [valuesSenha, setValuesSenha] = React.useState<StateSenha>({
@@ -89,31 +91,53 @@ export default function ComText({
       )
     }
   }
-  return (
-    <>
-      <FormControl sx={{ width: '100%' }}>
-        <Typography
-          variant='body2'
-          textAlign='left'
-          sx={{ mt: 1 }}
-        >
-          {label}
-        </Typography>
-        <OutlinedInput
-          value={dados[field]}
-          sx={{ my: 0, py: 0, height: 40 }}
-          placeholder={placeholder}
-          disabled={disabled}
-          type={type}
-          onChange={(e) => setState({ ...dados, [field]: e.target.value })}
-          endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
-          startAdornment={exibirIcone('end', iconeStart, onClickIconeStart)}
-          onKeyDown={(ev) => onKey(ev.key)}
+
+  if (tipo === 'checkbox') {
+
+    return (
+      <>
+        <FormControlLabel
+          sx={{ width: '100%' }}
+          label={label}
+          control={
+            <Checkbox
+              checked={dados[field]}
+              onChange={(e) => setState({ ...dados, [field]: e.target.checked })}
+              disabled={disabled}
+            />
+          }
         />
-        <Condicional condicao={typeof erros[field] !== 'undefined'}>
-          <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
-        </Condicional>
-      </FormControl>
-    </>
-  )
+      </>
+    )
+  } else if (tipo === 'text') {
+    return (
+      <>
+        <FormControl sx={{ width: '100%' }}>
+          <Typography
+            variant='body2'
+            textAlign='left'
+            sx={{ mt: 1 }}
+          >
+            {label}
+          </Typography>
+          <OutlinedInput
+            value={dados[field]}
+            sx={{ my: 0, py: 0, height: 40 }}
+            placeholder={placeholder}
+            disabled={disabled}
+            type={type}
+            onChange={(e) => setState({ ...dados, [field]: e.target.value })}
+            endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
+            startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
+            onKeyDown={(ev) => onKey(ev.key)}
+          />
+          <Condicional condicao={typeof erros[field] !== 'undefined'}>
+            <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
+          </Condicional>
+        </FormControl>
+      </>
+    )
+  } else {
+    return (<></>)
+  }
 }
