@@ -21,11 +21,6 @@
   ],
   "person": [
     {
-      "idPerson": 1,
-      "name": "Online Sites",
-      "category": 0
-    },
-    {
       "idPerson": 2,
       "name": "Cemig",
       "category": 0
@@ -59,16 +54,6 @@
       "idPerson": 8,
       "name": "Nova Serrana Couros",
       "category": 1
-    },
-    {
-      "idPerson": 9,
-      "name": "teste",
-      "category": 1
-    },
-    {
-      "idPerson": 10,
-      "name": "tegdgdgsdfgsdfgfdg",
-      "category": 1
     }
   ],
   "MenuDto": [
@@ -98,7 +83,7 @@
       "parentId": "Cadastros",
       "descricao": "Bairros",
       "icon": "location_on",
-      "path": ""
+      "path": "Person"
     },
     {
       "id": "Cidades",

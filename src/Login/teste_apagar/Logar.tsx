@@ -1,9 +1,9 @@
 import { Button, Card, CardContent, CardHeader, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material'
 import React, { useContext } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { GlobalContext, GlobalContextInterface } from '../Context/GlobalContext'
-import ApiCls from '../Services/ApiCls'
-import MenuCls from '../Layout/MenuCls'
+import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext'
+import ApiCls from '../../Services/ApiCls'
+import MenuCls from '../../Layout/MenuCls'
 export default function Login() {
 
   const { layoutState, setLayoutState } = useContext(GlobalContext) as GlobalContextInterface
@@ -18,15 +18,15 @@ export default function Login() {
   }
 
   const logar = () => {
-    clsApi.post<any>('/Usuario/AuthenticateUser', dados, 'Login', mensagemState, setMensagemState).then(rs => {
+    // clsApi.post<any>('/Usuario/AuthenticateUser', dados, 'Login', mensagemState, setMensagemState).then(rs => {
 
-      const clsMenu = new MenuCls(rs.MenuDto)
+    //   const clsMenu = new MenuCls(rs.MenuDto)
 
-      setLoginState({ ...loginState, logado: true })
-      setLayoutState({ ...layoutState, opcoesMenu: clsMenu.Menu })
+    //   setLoginState({ ...loginState, logado: true })
+    //   setLayoutState({ ...layoutState, opcoesMenu: clsMenu.Menu })
 
-      console.log(JSON.stringify(clsMenu.Menu))
-    })
+    //   console.log(JSON.stringify(clsMenu.Menu))
+    // })
   }
 
 

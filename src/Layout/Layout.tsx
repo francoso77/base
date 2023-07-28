@@ -8,11 +8,10 @@ import useLoginState from '../Context/LoginState';
 import useLayoutState from '../Context/LayoutState';
 import useMensagemState from '../Context/MensagemState';
 import { GlobalContext } from '../Context/GlobalContext';
-import Mensagem from '../Components/Mensagem/Mensagem';
 import { THEME } from '../Config/Theme';
 import Menu from './Menu';
-import Loading from './Loading';
 import Login from '../Login/Login';
+import Mensagem from '../Components/Mensagem/Mensagem';
 
 export default function Layout() {
 
@@ -41,11 +40,9 @@ export default function Layout() {
                 <Outlet />
                 <Footer />
                 <Menu />
-                <Loading />
               </> :
               <>
                 <Login />
-                <Loading />
               </>
             }
 

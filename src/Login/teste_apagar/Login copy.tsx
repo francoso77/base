@@ -4,99 +4,80 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Paper } from '@mui/material';
-import { GlobalContext, GlobalContextInterface } from '../Context/GlobalContext';
-import MenuCls, { MenuOpcoesInterface } from '../Layout/MenuCls';
-import Copyright from '../Layout/Copyright';
-import ComText from '../Components/ComText';
-import { URL_SERVIDOR } from '../Config/Setup';
-import { MensagemTipo } from '../Context/MensagemState';
+import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext';
+import ApiCls from '../../Services/ApiCls';
+import MenuCls from '../../Layout/MenuCls';
+import Copyright from '../../Layout/Copyright';
+import ComText from '../../Components/ComText';
 
 
 interface LoginInterface {
-    usuario: string
+    login: string
     senha: string
-    token: string
 }
 
 export default function Login() {
-    const { mensagemState, setMensagemState } = useContext(GlobalContext) as GlobalContextInterface
-    const { layoutState, setLayoutState } = useContext(GlobalContext) as GlobalContextInterface
-    const setLoginState = (useContext(GlobalContext) as GlobalContextInterface).setLoginState
 
-    const [usuarioState, setUsuarioState] = useState<LoginInterface>({
-        usuario: '',
-        senha: '',
-        token: ''
-    })
+    const GlobalContexto = (useContext(GlobalContext) as GlobalContextInterface)
+
+    const { mensagemState, setMensagemState } = useContext(GlobalContext) as GlobalContextInterface
+
+    const [usuarioState, setUsuarioState] = useState<LoginInterface>({ login: '', senha: '' })
 
     const [exibirSenhaState, setExibirSenhaState] = useState(false)
 
     const handleExibirSenha = () => {
         setExibirSenhaState(!exibirSenhaState)
     }
-    const logar = () => {
 
-        setMensagemState({
-            ...mensagemState,
-            titulo: 'Processando...',
-            mensagem: 'Login autorizado, carregando menu...',
-            exibir: true,
-            tipo: MensagemTipo.Loading,
-            exibirBotao: false,
-            cb: null
-        })
+    const clsApi = new ApiCls()
 
-        let urlMenu = URL_SERVIDOR.concat('/MenuDto')
-        let url = URL_SERVIDOR.concat('/usuarios?usuario=')
-        url = url.concat(usuarioState.usuario)
-        url = url.concat('&senha=')
-        url = url.concat(usuarioState.senha)
-
-        setTimeout(() => {
-
-            fetch(url).then(rs => {
-                return rs.json()
-            }).then((rs: LoginInterface[]) => {
-
-                if (rs.length > 0) {
-
-                    setLoginState({
-                        logado: true,
-                        usuario: rs[0].usuario,
-                        token: rs[0].token
-                    })
-
-                    fetch(urlMenu).then(rs => {
-                        return rs.json()
-                    }).then((rs: MenuOpcoesInterface[]) => {
-                        const clsMenu = new MenuCls(rs)
-                        setLayoutState({ ...layoutState, opcoesMenu: clsMenu.Menu })
-                    })
-
-                    setMensagemState({ ...mensagemState, exibir: false })
-
-                } else {
-                    setMensagemState({
-                        ...mensagemState,
-                        exibir: true,
-                        mensagem: 'Verifique Usuário / Senha',
-                        tipo: MensagemTipo.Error,
-                        exibirBotao: true
-                    })
-                }
-            }).catch(e => {
-                setMensagemState({
-                    ...mensagemState,
-                    exibir: true,
-                    mensagem: 'Erro de conexão com o Servidor',
-                    tipo: MensagemTipo.Error,
-                    exibirBotao: true
-                })
-            }
-            )
-        }, 1500)
+    const dados = {
+        "login": "Frank",
+        "senha": "123"
     }
 
+    const logar = () => {
+
+        setMensagemState({ ...mensagemState, exibir: true })
+
+        // clsApi.query<any>('/Usuario/AuthenticateUser', 'Login', GlobalContexto.mensagemState, GlobalContexto.setMensagemState).then(rs => {
+
+        //     const clsMenu = new MenuCls(rs.MenuDto)
+
+        //     GlobalContexto.setLoginState({ ...GlobalContexto.loginState, logado: true })
+        //     GlobalContexto.setLayoutState({ ...GlobalContexto.layoutState, opcoesMenu: clsMenu.Menu })
+
+
+        // })
+    }
+    /*   if (rs.token && rs.token.length > 0) {
+
+           const clsMenu = new MenuCls(rs.MenuDto)
+
+           GlobalContexto.setLoginState({ ...GlobalContexto.loginState, logado: true })
+           GlobalContexto.setLayoutState({ ...GlobalContexto.layoutState, opcoesMenu: clsMenu.Menu })
+           console.log(JSON.stringify(clsMenu.Menu))
+       } else {
+
+           GlobalContexto.setMensagemState({
+               ...GlobalContexto.mensagemState,
+               exibir: true,
+               mensagem: 'Verifique Usuário / Senha',
+               tipo: MensagemTipo.Erro
+           })
+       }
+   }).catch((erro) => {
+
+       console.log(erro)
+       GlobalContexto.setMensagemState({
+           ...GlobalContexto.mensagemState,
+           exibir: true,
+           mensagem: 'Erro de conexão com o Servidor',
+           tipo: MensagemTipo.Erro
+       })
+   })
+}*/
     return (
         <>
             <Grid
@@ -135,7 +116,7 @@ export default function Login() {
 
                             <ComText
                                 dados={usuarioState}
-                                field='usuario'
+                                field='login'
                                 label='Usuário'
                                 setState={setUsuarioState}
                             //valida='txt'

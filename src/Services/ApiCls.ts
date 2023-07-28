@@ -1,47 +1,59 @@
 import React from "react";
-//import { URL_API } from "../Config/Server";
-import { MensagemStateInterface } from '../Context/MensagemState';
+import { URL_SERVIDOR } from '../Config/Setup';
+import { MensagemStateInterface, MensagemTipo } from '../Context/MensagemState';
+import { ActionInterface, actionTypes } from '../interfaces/ActionInterface';
 
-
+export enum MetodoTipo {
+    GET = 'GET',
+    DELETE = 'DELETE',
+    POST = "POST",
+    PUT = 'PUT'
+}
 export default class ApiCls {
 
-    public post<T>(
+
+    public query<T>(
         url: string,
-        body: { [key: string]: number | string },
+        //body?: { [key: string]: number | string },
         mensagem: string,
         mensagemState: MensagemStateInterface,
-        setMensagemState: React.Dispatch<React.SetStateAction<MensagemStateInterface>>
+        setMensagemState: React.Dispatch<React.SetStateAction<MensagemStateInterface>>,
+        metodo: ActionInterface
     ): Promise<T> {
 
+        setMensagemState({
+            ...mensagemState,
+            titulo: 'Processando...',
+            mensagem: mensagem,
+            exibir: true,
+            tipo: MensagemTipo.Loading,
+            exibirBotao: false,
+            cb: null
+        })
+
+        var method: string = ''
+
+        if (metodo.action === actionTypes.pesquisando) {
+            method = MetodoTipo.GET
+        } else if (metodo.action === actionTypes.excluindo) {
+            method = MetodoTipo.DELETE
+        } else if (metodo.action === actionTypes.incluindo) {
+            method = MetodoTipo.POST
+        } else {
+            method = MetodoTipo.PUT
+        }
         let headers = new Headers()
 
         headers.set('Content-Type', 'application/json')
 
         const parametros: RequestInit = {
-            method: 'POST',
+            method: method,
             headers: headers,
-            body: JSON.stringify(body)
+            //body: JSON.stringify(body)
         }
 
-        //setMensagemState({ ...mensagemState, mensagem: mensagem })
-        //setMensagemState({...mensagemState, mensagem: mensagem, loading: true, modal: true})
-        /*
-// console.clear()
-console.log( url )
-return fetch( URL_API.concat( url ), parametros ).then( rs => {
-  return rs.json() as Promise<T>
-} )
- 
-*/
-        return new Promise((resolve) => {
-
-            console.log(parametros)
-            //console.log(URL_API)
-
-            setTimeout(() => {
-                console.log('Dentro do TimeOut ...')
-                resolve(require('../mock/Menu.json') as T)
-            }, 2000);
+        return fetch(URL_SERVIDOR.concat(url), parametros).then(rs => {
+            return rs.json() as Promise<T>
         })
     }
 }

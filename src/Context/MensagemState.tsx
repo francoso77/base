@@ -5,24 +5,25 @@ export enum MensagemTipo {
   Warning = 'warning',
   Error = 'error',
   Info = 'info',
-  Ok = 'success'
+  Ok = 'success',
+  Loading = 'Loading'
 }
 
 export interface MensagemStateInterface {
   exibir: boolean,
   titulo: string,
   mensagem: string,
-  tipo: AlertColor,
-  modal: boolean,
-  loading: boolean
+  tipo: AlertColor | 'Loading',
+  exibirBotao: boolean | 'SN' | string,
+  cb: null | ((res: boolean) => void)
 }
 export const MensagemStatePadrao: MensagemStateInterface = {
   exibir: false,
   titulo: '',
-  mensagem: 'Mensagem a ser exibida',
+  mensagem: '',
   tipo: MensagemTipo.Info,
-  modal: false,
-  loading: false
+  exibirBotao: 'SN',
+  cb: () => { }
 }
 
 export default function useMensagemState() {

@@ -5,15 +5,13 @@ import { Box, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon from '@mui/icons-material/Search';
-import React from 'react';
 import { PersonInterface } from '../../interfaces/PersonInterface';
 import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext';
 import { ActionInterface, actionTypes } from '../../interfaces/ActionInterface';
 import { MensagemTipo } from '../../Context/MensagemState';
 import ComText from '../../Components/ComText';
 import DataTable, { DataTableCabecalhoInterface } from '../../Components/DataTable';
-
+import ApiCls from '../../Services/ApiCls';
 
 const TEMPO_REFRESH_TEMPORARIO = 500
 
@@ -23,7 +21,14 @@ interface PesquisaInterface {
 
 export default function Person() {
 
+  const api: ApiCls = new ApiCls()
+
   const Cabecalho: Array<DataTableCabecalhoInterface> = [
+    {
+      campo: 'idPerson',
+      cabecalho: 'Id',
+      alinhamento: 'left'
+    },
     {
       campo: 'name',
       cabecalho: 'Nome',
@@ -55,98 +60,52 @@ export default function Person() {
     setPerson({ ...person, category: cat })
   };
 
-  // const printTable = () =>
-  //   rsPesquisa.map((person) =>
-  //     <tr key={person.idPerson}>
-  //       <td>{person.name}</td>
-  //       <td>{person.category}</td>
-  //       <td>
-  //         <input type="button" value="Editar" onClick={() => btEditar(person.idPerson, actionTypes.editando)} />
-  //         <input type="button" value="Excluir" onClick={() => btEditar(person.idPerson, actionTypes.excluindo)} />
-  //       </td>
-  //     </tr>
-  //   )
-
-  const btEditar = (idPerson: number, action: string) => {
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Pesquisando Pessoa', tipo: MensagemTipo.Info, modal: true })
-    setTimeout(() => {
-
-      fetch(URL_SERVIDOR.concat('/person/'.concat(idPerson.toString())), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET'
-      }).then(rs => {
-        if (rs.ok) {
-          setMensagemState({ ...mensagemState, exibir: false, mensagem: '', modal: false })
-
-          return rs.json()
-
-        } else {
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro ao pesquisa Pessoa', tipo: MensagemTipo.Info, modal: true })
-        }
-      }).then(rsPerson => {
-        setPerson(rsPerson)
-        setLocalState({ action: action })
-
-      }).catch(() => {
-        setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na conexão, não foi possível fazer a exclusão!', tipo: MensagemTipo.Error, modal: true })
-      })
-
-    }, TEMPO_REFRESH_TEMPORARIO)
+  const btEditar = (rs: PersonInterface) => {
+    setPerson(rs)
+    setLocalState({ action: actionTypes.editando })
   }
-
-
-
+  const btExcluir = (rs: PersonInterface) => {
+    setPerson(rs)
+    setLocalState({ action: actionTypes.excluindo })
+  }
   const btIncluir = () => {
     setLocalState({ action: actionTypes.incluindo })
   }
-
   const btCancelar = () => {
     setLocalState({ action: actionTypes.pesquisando })
     btPesquisar()
   }
 
   const btConfirmarExclusao = () => {
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Excluindo dados....', tipo: MensagemTipo.Info, modal: true })
-
-    setTimeout(() => {
-
-      fetch(URL_SERVIDOR.concat('/person/'.concat(person.idPerson.toString())), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'DELETE'
-      }).then(rs => {
-
-        if (rs.ok) {
-
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Pessoa excluída com sucesso', tipo: MensagemTipo.Info, modal: true })
-
-          setPerson(ResetDados)
-
-          setLocalState({ action: 'pesquisando' })
-
-          btPesquisar()
-
-        } else {
-
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na exclusão', tipo: MensagemTipo.Error, modal: true })
-
-        }
-
+    api.query<any>('/person/'.concat(person.idPerson.toString()), 'Excluíndo Pessoa ...', mensagemState, setMensagemState, localState)
+      .then(rs => {
+        setMensagemState({
+          ...mensagemState,
+          titulo: 'Confirmado!',
+          exibir: true,
+          mensagem: 'Pessoa excluído com sucesso!',
+          tipo: MensagemTipo.Info,
+          exibirBotao: true
+        })
+        console.log(rs)
+        setPerson(ResetDados)
+        setLocalState({ action: 'pesquisando' })
+        //btPesquisar()
       }).catch(() => {
 
-        setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na conexão, não foi possível fazer a exclusão!', tipo: MensagemTipo.Error, modal: true })
-
+        setMensagemState({
+          ...mensagemState,
+          exibir: true,
+          mensagem: 'Pessoa não excluído!',
+          tipo: MensagemTipo.Error,
+          exibirBotao: true
+        })
       })
-
-    }, TEMPO_REFRESH_TEMPORARIO)
-
   }
 
+
   const btConfirmarEdicao = () => {
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Alterando dados....', tipo: MensagemTipo.Info, modal: true })
+    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Alterando dados....', tipo: MensagemTipo.Info })
 
     setTimeout(() => {
       fetch(URL_SERVIDOR.concat('/person/'.concat(person.idPerson.toString())), {
@@ -159,25 +118,45 @@ export default function Person() {
       }).then(rs => {
         if (rs.ok) {
 
+          setMensagemState({
+            ...mensagemState,
+            titulo: 'Confirmado!',
+            exibir: true,
+            mensagem: localState.action === actionTypes.incluindo ? 'Pessoa cadastrado com sucesso!' : 'Dados Alterados!',
+            tipo: MensagemTipo.Info,
+            exibirBotao: true
+          })
+
           setPerson(ResetDados)
 
           setLocalState({ action: 'pesquisando' })
 
           btPesquisar()
 
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Dados alterados com sucesso', tipo: MensagemTipo.Info, modal: true })
         } else {
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na alteração', tipo: MensagemTipo.Error, modal: true })
+          setMensagemState({
+            ...mensagemState,
+            exibir: true,
+            mensagem: 'Cadastro de Pessoas não atualizado!',
+            tipo: MensagemTipo.Error,
+            exibirBotao: true
+          })
         }
       }).catch(() => {
-        setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na conexão, não foi possível fazer a alteração!', tipo: MensagemTipo.Error, modal: true })
+        setMensagemState({
+          ...mensagemState,
+          exibir: true,
+          mensagem: 'Erro na conexão com o bando de dados!',
+          tipo: MensagemTipo.Error,
+          exibirBotao: true
+        })
       })
     }, TEMPO_REFRESH_TEMPORARIO)
   }
 
   const btConfirmarInclusao = () => {
 
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Incluindo dados....', tipo: MensagemTipo.Info, modal: true })
+    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Incluindo dados....', tipo: MensagemTipo.Info })
 
     setTimeout(() => {
       fetch(URL_SERVIDOR.concat('/person'), {
@@ -188,21 +167,49 @@ export default function Person() {
         method: 'POST'
       }).then(rs => {
         if (rs.ok) {
+          setMensagemState({
+            ...mensagemState,
+            titulo: 'Confirmado!',
+            exibir: true,
+            mensagem: localState.action === actionTypes.incluindo ? 'Pessoa cadastrado com sucesso!' : 'Dados Alterados!',
+            tipo: MensagemTipo.Info,
+            exibirBotao: true
+          })
 
           setPerson(ResetDados)
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Pessoa incluída com sucesso', tipo: MensagemTipo.Info, modal: true })
+
+          btCancelar()
         } else {
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na inclusão', tipo: MensagemTipo.Error, modal: true })
+          setMensagemState({
+            ...mensagemState,
+            exibir: true,
+            mensagem: 'Cadastro de Pessoas não atualizado!',
+            tipo: MensagemTipo.Error,
+            exibirBotao: true
+          })
         }
       }).catch(() => {
-        setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na conexão, não foi possível fazer a inclusão!', tipo: MensagemTipo.Error, modal: true })
+        setMensagemState({
+          ...mensagemState,
+          exibir: true,
+          mensagem: 'Erro na conexão com o bando de dados!',
+          tipo: MensagemTipo.Error,
+          exibirBotao: true
+        })
       })
     }, TEMPO_REFRESH_TEMPORARIO)
   }
 
   const btPesquisar = () => {
-
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Pesquisando ....', tipo: MensagemTipo.Info, modal: true })
+    setMensagemState({
+      ...mensagemState,
+      titulo: 'Processando',
+      mensagem: 'Recebendo Pessoas ...',
+      exibir: true,
+      tipo: MensagemTipo.Loading,
+      exibirBotao: false,
+      cb: null
+    })
 
     setTimeout(() => {
 
@@ -214,19 +221,34 @@ export default function Person() {
       }).then(rs => {
 
         if (rs.ok) {
-          setMensagemState({ ...mensagemState, exibir: false, mensagem: '', tipo: MensagemTipo.Info, modal: false })
-
+          setMensagemState({
+            ...mensagemState,
+            exibir: false,
+          })
           return rs.json()
 
         } else {
-          setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro ao pesquisar', tipo: MensagemTipo.Error, modal: true })
+          setMensagemState({
+            ...mensagemState,
+            titulo: 'Erro! Consulte Suporte!',
+            exibir: true,
+            mensagem: 'Erro ao consultar Pessoas!',
+            tipo: MensagemTipo.Error,
+            exibirBotao: true
+          })
         }
       }).then((rsPerson: PersonInterface[]) => {
 
         setRsPesquisa(rsPerson)
 
       }).catch(() => {
-        setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Erro na conexão, não foi possível fazer a pesquisa!', tipo: MensagemTipo.Error, modal: true })
+        setMensagemState({
+          ...mensagemState,
+          exibir: true,
+          mensagem: 'Erro na conexão com o bando de dados!',
+          tipo: MensagemTipo.Error,
+          exibirBotao: true
+        })
       })
 
     }, TEMPO_REFRESH_TEMPORARIO)
@@ -262,16 +284,19 @@ export default function Person() {
 
               <>
                 <Grid item xs={12} sm={10} sx={{ mb: 3 }}>
-                  <ComText label="Pesquisa" type="text" dados={pesquisa} field="nome" setState={setPesquisa} />
+                  <ComText
+                    label="Digite o nome"
+                    type="text"
+                    dados={pesquisa}
+                    field="nome"
+                    setState={setPesquisa}
+                    iconeEnd='searchicon'
+                    onClickIconeEnd={() => btPesquisar()}
+                  />
 
                 </Grid>
-                <Grid item xs={12} sm={2} sx={{ textAlign: { xs: 'right', sm: 'center' } }}>
-                  <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={() => btPesquisar()}>
-                    <SearchIcon />
-                  </IconButton>
-
+                <Grid item xs={12} sm={2} sx={{ textAlign: 'center' }}>
                   <Button variant='contained' onClick={() => btIncluir()}>Incluir</Button>
-
                 </Grid>
               </>
             }
@@ -279,7 +304,13 @@ export default function Person() {
             {localState.action !== 'pesquisando' &&
               <>
                 <Grid item xs={12} sm={10} mt={3}>
-                  <ComText label="Nome" type="text" dados={person} field="name" setState={setPerson} disabled={localState.action == 'excluindo' ? true : false} />
+                  <ComText
+                    label="Nome"
+                    type="text"
+                    dados={person}
+                    field="name" setState={setPerson}
+                    disabled={localState.action === 'excluindo' ? true : false}
+                  />
                 </Grid>
 
                 <Grid item xs={12} sm={10} mt={3}>
@@ -287,6 +318,7 @@ export default function Person() {
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
                       <Select
+                        disabled={localState.action === 'excluindo' ? true : false}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={person.category.toString()}
@@ -324,27 +356,12 @@ export default function Person() {
 
             {
               localState.action === 'pesquisando' &&
-
-              // <table className='clsTableEscola'>
-              //   <thead>
-              //     <tr>
-              //       <td>Nome</td>
-              //       <td>Categoria</td>
-              //       <td>Ações</td>
-              //     </tr>
-              //   </thead>
-              //   <tbody>
-              //     {
-              //       printTable()
-              //     }
-              //   </tbody>
-              // </table>
               <Grid item xs={12} sx={{ mt: 3 }}>
                 <DataTable
                   dados={rsPesquisa}
                   cabecalho={Cabecalho}
-                  onEditar={() => btEditar(person.idPerson, actionTypes.editando)}
-                  onExcluir={() => btEditar(person.idPerson, actionTypes.excluindo)}
+                  onEditar={btEditar}
+                  onExcluir={btExcluir}
                 />
               </Grid>
             }

@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
-import { URL_SERVIDOR } from '../Config/Setup';
-import ComText from '../Components/ComText';
+import { URL_SERVIDOR } from '../../Config/Setup';
+import ComText from '../../Components/ComText';
 import * as Styled from './styles'
-import { GlobalContext, GlobalContextInterface } from '../Context/GlobalContext';
+import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext';
 import { Button } from '@mui/material';
-import { MensagemTipo } from '../Context/MensagemState';
-import MenuCls, { MenuOpcoesInterface } from '../Layout/MenuCls';
+import { MensagemTipo } from '../../Context/MensagemState';
+import MenuCls, { MenuOpcoesInterface } from '../../Layout/MenuCls';
 
 interface LoginInterface {
   usuario: string,
@@ -33,7 +33,7 @@ export default function jacare() {
     url = url.concat('&senha=')
     url = url.concat(usuarioState.senha)
 
-    setMensagemState({ ...mensagemState, loading: true })
+    setMensagemState({ ...mensagemState, exibir: true })
 
     setTimeout(() => {
 
@@ -60,13 +60,13 @@ export default function jacare() {
         } else {
           console.log('verifique o usuario e a senha')
           setMensagemState({
-            ...mensagemState, exibir: true, mensagem: 'Verifique Usuário / Senha', tipo: MensagemTipo.Error, modal: true, loading: false
+            ...mensagemState, exibir: true, mensagem: 'Verifique Usuário / Senha', tipo: MensagemTipo.Error
           })
         }
       }).catch(e => {
         console.log('Erro no Fetch....', e)
         setMensagemState({
-          ...mensagemState, exibir: true, mensagem: 'Erro de conexão com o Servidor', tipo: MensagemTipo.Error, modal: true, loading: false
+          ...mensagemState, exibir: true, mensagem: 'Erro de conexão com o Servidor', tipo: MensagemTipo.Error
         })
       }
       )
