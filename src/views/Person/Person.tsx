@@ -52,9 +52,10 @@ export default function Person() {
   const [rsPesquisa, setRsPesquisa] = useState<Array<PersonInterface>>([])
   const [pesquisa, setPesquisa] = useState<PesquisaInterface>({ nome: '' })
   const [person, setPerson] = useState<PersonInterface>(ResetDados)
-
   const categorys = ['Despesas', 'Receitas']
 
+  
+  
   const handleChangeCategory = (event: SelectChangeEvent) => {
     let cat: number = parseInt(event.target.value as string)
     setPerson({ ...person, category: cat })
@@ -85,12 +86,12 @@ export default function Person() {
           exibir: true,
           mensagem: 'Pessoa excluído com sucesso!',
           tipo: MensagemTipo.Info,
-          exibirBotao: true
+          exibirBotao: true,
+          cb: () => btPesquisar()
         })
         console.log(rs)
         setPerson(ResetDados)
         setLocalState({ action: 'pesquisando' })
-        //btPesquisar()
       }).catch(() => {
 
         setMensagemState({
@@ -131,7 +132,6 @@ export default function Person() {
 
           setLocalState({ action: 'pesquisando' })
 
-          btPesquisar()
 
         } else {
           setMensagemState({
@@ -224,6 +224,7 @@ export default function Person() {
           setMensagemState({
             ...mensagemState,
             exibir: false,
+            mensagem: ''
           })
           return rs.json()
 

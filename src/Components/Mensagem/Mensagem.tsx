@@ -19,6 +19,9 @@ export default function Mensagem() {
 
   const fecharJanela = () => {
     setMensagemState({ ...mensagemState, exibir: false })
+    if (mensagemState.cb) {
+      mensagemState.cb(true)
+    }
   }
 
   const exibirBotao = (): boolean =>

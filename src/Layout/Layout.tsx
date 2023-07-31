@@ -45,7 +45,6 @@ export default function Layout() {
                 <Login />
               </>
             }
-
           </>
 
         </GlobalContext.Provider>

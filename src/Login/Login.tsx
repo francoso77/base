@@ -9,7 +9,7 @@ import MenuCls, { MenuOpcoesInterface } from '../Layout/MenuCls';
 import Copyright from '../Layout/Copyright';
 import ComText from '../Components/ComText';
 import { URL_SERVIDOR } from '../Config/Setup';
-import { MensagemTipo } from '../Context/MensagemState';
+import { MensagemStatePadrao, MensagemTipo } from '../Context/MensagemState';
 
 
 interface LoginInterface {
@@ -73,8 +73,6 @@ export default function Login() {
                         setLayoutState({ ...layoutState, opcoesMenu: clsMenu.Menu })
                     })
 
-                    setMensagemState({ ...mensagemState, exibir: false })
-
                 } else {
                     setMensagemState({
                         ...mensagemState,
@@ -84,7 +82,7 @@ export default function Login() {
                         exibirBotao: true
                     })
                 }
-            }).catch(e => {
+            }).catch(() => {
                 setMensagemState({
                     ...mensagemState,
                     exibir: true,

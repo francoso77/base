@@ -55,5 +55,6 @@ export default class ApiCls {
         return fetch(URL_SERVIDOR.concat(url), parametros).then(rs => {
             return rs.json() as Promise<T>
         })
+        
     }
 }
