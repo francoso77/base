@@ -2,6 +2,7 @@ import React from "react";
 import { URL_SERVIDOR } from '../Config/Setup';
 import { MensagemStateInterface, MensagemTipo } from '../Context/MensagemState';
 import { ActionInterface, actionTypes } from '../interfaces/ActionInterface';
+import { PersonInterface } from '../interfaces/PersonInterface';
 
 export enum MetodoTipo {
     GET = 'GET',
@@ -14,7 +15,7 @@ export default class ApiCls {
 
     public query<T>(
         url: string,
-        //body?: { [key: string]: number | string },
+        body: PersonInterface | string,
         mensagem: string,
         mensagemState: MensagemStateInterface,
         setMensagemState: React.Dispatch<React.SetStateAction<MensagemStateInterface>>,
@@ -46,15 +47,24 @@ export default class ApiCls {
 
         headers.set('Content-Type', 'application/json')
 
-        const parametros: RequestInit = {
-            method: method,
-            headers: headers,
-            //body: JSON.stringify(body)
+        let parametros: RequestInit
+
+        if (metodo.action === actionTypes.excluindo) {
+            parametros = {
+                headers: headers,
+                method: method,
+            }
+        } else {
+            parametros = {
+                body: JSON.stringify(body),
+                headers: headers,
+                method: method,
+            }
         }
 
         return fetch(URL_SERVIDOR.concat(url), parametros).then(rs => {
             return rs.json() as Promise<T>
         })
-        
+
     }
 }

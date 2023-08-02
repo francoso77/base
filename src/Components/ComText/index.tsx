@@ -1,29 +1,12 @@
-import React from 'react';
-import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormControl, TextField, FormControlLabel, Checkbox } from '@mui/material';
-import * as Styled from './styles';
+import React, { useState } from 'react';
+import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormControl, FormControlLabel, Checkbox } from '@mui/material';
 import Condicional from '../Condicional/Condicional';
 
-// interface TextProps {
-//   bgColor: string;
-//   hoverColor: string;
-//   children: any;
-// }
-// export const Text: React.FC<TextProps> = ({ bgColor, hoverColor, children }) => {
-
-//   return (
-//     <Styled.TextCustom bgColor={bgColor} hoverColor={hoverColor}>
-//       {children}
-//     </Styled.TextCustom>
-//   )
-// };
 interface mapKeyPressInterface {
   key: string
   onKey: () => void
 }
-interface StateSenha {
-  Senha: string;
-  MostarSenha: boolean;
-}
+
 interface ComTextInterface {
   label: string,
   disabled?: boolean,
@@ -39,7 +22,7 @@ interface ComTextInterface {
   onClickIconeStart?: () => void
   mapKeyPress?: Array<mapKeyPressInterface>
   tipo?: 'text' | 'checkbox',
-  valida?: string,
+  autofocus?: boolean,
 }
 export default function ComText({
   label,
@@ -56,13 +39,8 @@ export default function ComText({
   mapKeyPress = [],
   tipo = 'text',
   erros = {},
-  valida = ''
+  autofocus = false
 }: ComTextInterface) {
-
-  const [valuesSenha, setValuesSenha] = React.useState<StateSenha>({
-    Senha: '',
-    MostarSenha: false,
-  })
 
   const onKey = (key: string) => {
     if (mapKeyPress.length > 0) {
@@ -130,6 +108,7 @@ export default function ComText({
             endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
             startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
             onKeyDown={(ev) => onKey(ev.key)}
+            autoFocus={autofocus}
           />
           <Condicional condicao={typeof erros[field] !== 'undefined'}>
             <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>

@@ -51,9 +51,45 @@
       "category": 1
     },
     {
-      "idPerson": 8,
-      "name": "Nova Serrana Couros",
-      "category": 1
+      "idPerson": 8
+    },
+    {
+      "idPerson": 9
+    },
+    {
+      "idPerson": 10,
+      "name": "sdgdfgdsfgfdg",
+      "category": 0
+    },
+    {
+      "idPerson": 11,
+      "name": "13213213 dsgfdgdfgf",
+      "category": 0
+    },
+    {
+      "idPerson": 12,
+      "name": "ddfadfdfasdff",
+      "category": 0
+    },
+    {
+      "idPerson": 13,
+      "name": "asfasfsfdfs",
+      "category": 0
+    },
+    {
+      "idPerson": 14,
+      "name": "daffdsfadsf",
+      "category": 0
+    },
+    {
+      "idPerson": 15,
+      "name": "sdfgsdfgsdfgdfg",
+      "category": 0
+    },
+    {
+      "idPerson": 16,
+      "name": "12313",
+      "category": 0
     }
   ],
   "MenuDto": [

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { URL_SERVIDOR } from '../../Config/Setup';
 import Button from '@mui/material/Button';
 import { Box, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Typography } from '@mui/material';
@@ -12,6 +12,7 @@ import { MensagemTipo } from '../../Context/MensagemState';
 import ComText from '../../Components/ComText';
 import DataTable, { DataTableCabecalhoInterface } from '../../Components/DataTable';
 import ApiCls from '../../Services/ApiCls';
+import ClsValidaCampo from '../../Services/ClsValidaCampos';
 
 const TEMPO_REFRESH_TEMPORARIO = 500
 
@@ -22,6 +23,7 @@ interface PesquisaInterface {
 export default function Person() {
 
   const api: ApiCls = new ApiCls()
+  const validaCampo: ClsValidaCampo = new ClsValidaCampo()
 
   const Cabecalho: Array<DataTableCabecalhoInterface> = [
     {
@@ -52,10 +54,13 @@ export default function Person() {
   const [rsPesquisa, setRsPesquisa] = useState<Array<PersonInterface>>([])
   const [pesquisa, setPesquisa] = useState<PesquisaInterface>({ nome: '' })
   const [person, setPerson] = useState<PersonInterface>(ResetDados)
+  const [erros, setErros] = useState({})
   const categorys = ['Despesas', 'Receitas']
 
-  
-  
+  useEffect(() => {
+    console.log(document.getElementsByName('nome').values)
+  }, [rsPesquisa])
+
   const handleChangeCategory = (event: SelectChangeEvent) => {
     let cat: number = parseInt(event.target.value as string)
     setPerson({ ...person, category: cat })
@@ -70,135 +75,78 @@ export default function Person() {
     setLocalState({ action: actionTypes.excluindo })
   }
   const btIncluir = () => {
+    setErros({})
+    setPerson(ResetDados)
     setLocalState({ action: actionTypes.incluindo })
   }
   const btCancelar = () => {
+    setErros({})
+    setPerson(ResetDados)
     setLocalState({ action: actionTypes.pesquisando })
-    btPesquisar()
   }
 
-  const btConfirmarExclusao = () => {
-    api.query<any>('/person/'.concat(person.idPerson.toString()), 'Excluíndo Pessoa ...', mensagemState, setMensagemState, localState)
-      .then(rs => {
-        setMensagemState({
-          ...mensagemState,
-          titulo: 'Confirmado!',
-          exibir: true,
-          mensagem: 'Pessoa excluído com sucesso!',
-          tipo: MensagemTipo.Info,
-          exibirBotao: true,
-          cb: () => btPesquisar()
-        })
-        console.log(rs)
-        setPerson(ResetDados)
-        setLocalState({ action: 'pesquisando' })
-      }).catch(() => {
+  const validarDados = (): boolean => {
+    let retorno: boolean = true
+    let erros: { [key: string]: string } = {}
 
-        setMensagemState({
-          ...mensagemState,
-          exibir: true,
-          mensagem: 'Pessoa não excluído!',
-          tipo: MensagemTipo.Error,
-          exibirBotao: true
-        })
-      })
+    if (validaCampo.campoVazio(person.name)) {
+      retorno = false
+      erros.name = 'Nome Não pode ser Vazio!'
+    }
+    setErros(erros)
+    return retorno
   }
 
+  const btConfirmar = () => {
+    console.log('dados foi validado? ', validarDados())
 
-  const btConfirmarEdicao = () => {
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Alterando dados....', tipo: MensagemTipo.Info })
+    if (validarDados()) {
+      let msg1: string = ''
+      let msg2: string = ''
+      let msg3: string = 'Cadastro de Pessoas não atualizado!'
+      let url_ativa: string = '/person/'.concat(person.idPerson.toString())
+      let body: PersonInterface | string = person
 
-    setTimeout(() => {
-      fetch(URL_SERVIDOR.concat('/person/'.concat(person.idPerson.toString())), {
-        body: JSON.stringify(person),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'PUT'
+      if (localState.action === actionTypes.incluindo) {
+        msg1 = 'Incluíndo dados em Pessoa...'
+        msg2 = 'Pessoa cadastrado com sucesso!'
+        url_ativa = '/person'
+      } else if (localState.action === actionTypes.excluindo) {
+        msg1 = 'Excluíndo Pessoa do cadastro ...'
+        msg2 = 'Pessoa excluída com sucesso!'
+        msg3 = 'Pessoa não excluído!'
+        body = ''
+      } else if (localState.action === actionTypes.editando) {
+        msg1 = 'Editando dados da Pessoa...'
+        msg2 = 'Pessoa alterada com sucesso!'
+      }
 
-      }).then(rs => {
-        if (rs.ok) {
-
+      api.query<any>(url_ativa, body, msg1, mensagemState, setMensagemState, localState)
+        .then(rs => {
           setMensagemState({
             ...mensagemState,
             titulo: 'Confirmado!',
             exibir: true,
-            mensagem: localState.action === actionTypes.incluindo ? 'Pessoa cadastrado com sucesso!' : 'Dados Alterados!',
+            mensagem: msg2,
             tipo: MensagemTipo.Info,
-            exibirBotao: true
+            exibirBotao: true,
+            cb: () => btPesquisar()
           })
-
           setPerson(ResetDados)
-
           setLocalState({ action: 'pesquisando' })
+        }).catch(() => {
 
-
-        } else {
           setMensagemState({
             ...mensagemState,
             exibir: true,
-            mensagem: 'Cadastro de Pessoas não atualizado!',
+            mensagem: msg3,
             tipo: MensagemTipo.Error,
             exibirBotao: true
           })
-        }
-      }).catch(() => {
-        setMensagemState({
-          ...mensagemState,
-          exibir: true,
-          mensagem: 'Erro na conexão com o bando de dados!',
-          tipo: MensagemTipo.Error,
-          exibirBotao: true
         })
-      })
-    }, TEMPO_REFRESH_TEMPORARIO)
+    }
   }
 
-  const btConfirmarInclusao = () => {
-
-    setMensagemState({ ...mensagemState, exibir: true, mensagem: 'Incluindo dados....', tipo: MensagemTipo.Info })
-
-    setTimeout(() => {
-      fetch(URL_SERVIDOR.concat('/person'), {
-        body: JSON.stringify(person),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST'
-      }).then(rs => {
-        if (rs.ok) {
-          setMensagemState({
-            ...mensagemState,
-            titulo: 'Confirmado!',
-            exibir: true,
-            mensagem: localState.action === actionTypes.incluindo ? 'Pessoa cadastrado com sucesso!' : 'Dados Alterados!',
-            tipo: MensagemTipo.Info,
-            exibirBotao: true
-          })
-
-          setPerson(ResetDados)
-
-          btCancelar()
-        } else {
-          setMensagemState({
-            ...mensagemState,
-            exibir: true,
-            mensagem: 'Cadastro de Pessoas não atualizado!',
-            tipo: MensagemTipo.Error,
-            exibirBotao: true
-          })
-        }
-      }).catch(() => {
-        setMensagemState({
-          ...mensagemState,
-          exibir: true,
-          mensagem: 'Erro na conexão com o bando de dados!',
-          tipo: MensagemTipo.Error,
-          exibirBotao: true
-        })
-      })
-    }, TEMPO_REFRESH_TEMPORARIO)
-  }
 
   const btPesquisar = () => {
     setMensagemState({
@@ -293,6 +241,8 @@ export default function Person() {
                     setState={setPesquisa}
                     iconeEnd='searchicon'
                     onClickIconeEnd={() => btPesquisar()}
+                    mapKeyPress={[{ key: 'Enter', onKey: btPesquisar }]}
+                    autofocus={true}
                   />
 
                 </Grid>
@@ -309,8 +259,10 @@ export default function Person() {
                     label="Nome"
                     type="text"
                     dados={person}
-                    field="name" setState={setPerson}
+                    field="name"
+                    setState={setPerson}
                     disabled={localState.action === 'excluindo' ? true : false}
+                    erros={erros}
                   />
                 </Grid>
 
@@ -319,20 +271,19 @@ export default function Person() {
                     <FormControl fullWidth>
                       <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
                       <Select
+                        sx={{ my: 0, py: 0, height: 40 }}
                         disabled={localState.action === 'excluindo' ? true : false}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={person.category.toString()}
                         label="Categoria"
                         onChange={handleChangeCategory}
-                        sx={{ padding: 0, margin: 0 }}
+                        required
                       >
                         {categorys.map((category, i) => (
                           <MenuItem key={i} value={i}>{category}</MenuItem>
                         ))}
-
                       </Select>
-
                     </FormControl>
                   </Box>
                 </Grid>
@@ -340,15 +291,15 @@ export default function Person() {
             }
 
             {localState.action === 'incluindo' &&
-              <Button sx={{ marginTop: 3 }} variant="contained" onClick={btConfirmarInclusao} >Confirmar Inclusão</Button>
+              <Button sx={{ marginTop: 3 }} variant="contained" onClick={btConfirmar} >Confirmar Inclusão</Button>
             }
 
             {localState.action === 'editando' &&
-              <Button sx={{ marginTop: 3 }} variant="contained" onClick={btConfirmarEdicao} >Confirmar Edição</Button>
+              <Button sx={{ marginTop: 3 }} variant="contained" onClick={btConfirmar} >Confirmar Edição</Button>
             }
 
             {localState.action === 'excluindo' &&
-              <Button sx={{ marginTop: 3 }} variant="contained" onClick={btConfirmarExclusao} >Confirmar Exclusão</Button>
+              <Button sx={{ marginTop: 3 }} variant="contained" onClick={btConfirmar} >Confirmar Exclusão</Button>
             }
 
             {localState.action !== 'pesquisando' &&

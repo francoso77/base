@@ -9,7 +9,7 @@ import MenuCls, { MenuOpcoesInterface } from '../Layout/MenuCls';
 import Copyright from '../Layout/Copyright';
 import ComText from '../Components/ComText';
 import { URL_SERVIDOR } from '../Config/Setup';
-import { MensagemStatePadrao, MensagemTipo } from '../Context/MensagemState';
+import { MensagemTipo } from '../Context/MensagemState';
 
 
 interface LoginInterface {
@@ -136,7 +136,6 @@ export default function Login() {
                                 field='usuario'
                                 label='Usuário'
                                 setState={setUsuarioState}
-                            //valida='txt'
                             />
 
                             <ComText
@@ -147,7 +146,7 @@ export default function Login() {
                                 setState={setUsuarioState}
                                 iconeEnd={exibirSenhaState ? 'visibility_off' : 'visibility'}
                                 onClickIconeEnd={handleExibirSenha}
-                            //valida='txt'
+                                mapKeyPress={[{ key: 'Enter', onKey: logar }]}
                             />
 
                             <Button variant='contained' onClick={() => logar()} sx={{ width: '100%', mb: 3, mt: 3 }}>Logar</Button>

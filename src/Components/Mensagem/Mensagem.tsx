@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Box, Button, Dialog, Grid, Icon, Typography, useTheme, CircularProgress } from '@mui/material'
 import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext';
 import Condicional from '../Condicional/Condicional';
