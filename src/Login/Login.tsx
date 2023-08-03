@@ -7,7 +7,7 @@ import { Paper } from '@mui/material';
 import { GlobalContext, GlobalContextInterface } from '../Context/GlobalContext';
 import MenuCls, { MenuOpcoesInterface } from '../Layout/MenuCls';
 import Copyright from '../Layout/Copyright';
-import ComText from '../Components/ComText';
+import ComText from '../Components/Text';
 import { URL_SERVIDOR } from '../Config/Setup';
 import { MensagemTipo } from '../Context/MensagemState';
 

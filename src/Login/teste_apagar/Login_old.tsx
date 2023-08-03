@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { URL_SERVIDOR } from '../../Config/Setup';
-import ComText from '../../Components/ComText';
+import ComText from '../../Components/Text';
 import * as Styled from './styles'
 import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext';
 import { Button } from '@mui/material';

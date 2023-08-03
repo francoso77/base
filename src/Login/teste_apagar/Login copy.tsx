@@ -8,7 +8,7 @@ import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalConte
 import ApiCls from '../../Services/ApiCls';
 import MenuCls from '../../Layout/MenuCls';
 import Copyright from '../../Layout/Copyright';
-import ComText from '../../Components/ComText';
+import ComText from '../../Components/Text';
 
 
 interface LoginInterface {

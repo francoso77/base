@@ -9,7 +9,7 @@ import { PersonInterface } from '../../interfaces/PersonInterface';
 import { GlobalContext, GlobalContextInterface } from '../../Context/GlobalContext';
 import { ActionInterface, actionTypes } from '../../interfaces/ActionInterface';
 import { MensagemTipo } from '../../Context/MensagemState';
-import ComText from '../../Components/ComText';
+import Text from '../../Components/Text';
 import DataTable, { DataTableCabecalhoInterface } from '../../Components/DataTable';
 import ApiCls from '../../Services/ApiCls';
 import ClsValidaCampo from '../../Services/ClsValidaCampos';
@@ -304,7 +304,7 @@ export default function Person() {
             </Grid>
             <Condicional condicao={localState.action === 'pesquisando'}>
               <Grid item xs={12} sm={10} sx={{ mb: 3 }}>
-                <ComText
+                <Text
                   label="Digite o nome"
                   tipo="text"
                   dados={pesquisa}
@@ -323,9 +323,9 @@ export default function Person() {
 
             <Condicional condicao={localState.action !== 'pesquisando'}>
               <Grid item xs={12} sm={3}>
-                <ComText
+                <Text
                   label="CPF"
-                  tipo="text"
+                  tipo="mask"
                   dados={person}
                   field="cpf"
                   setState={setPerson}
@@ -335,7 +335,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={8}>
-                <ComText
+                <Text
                   label="Nome"
                   tipo="text"
                   dados={person}
@@ -346,7 +346,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={1}>
-                <ComText
+                <Text
                   label="Ativo"
                   tipo="checkbox"
                   dados={person}
@@ -357,7 +357,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={3}>
-                <ComText
+                <Text
                   label="CEP"
                   tipo="text"
                   dados={person}
@@ -371,7 +371,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={7}>
-                <ComText
+                <Text
                   label="Endereço"
                   type="text"
                   dados={person}
@@ -382,7 +382,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={2}>
-                <ComText
+                <Text
                   label="Número"
                   tipo="text"
                   dados={person}
@@ -393,7 +393,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <ComText
+                <Text
                   label="Bairro"
                   tipo="text"
                   dados={person}
@@ -404,7 +404,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <ComText
+                <Text
                   label="Cidade"
                   tipo="text"
                   dados={person}
@@ -415,7 +415,7 @@ export default function Person() {
                 />
               </Grid>
               <Grid item xs={12} sm={2} >
-                <ComText
+                <Text
                   label="UF"
                   tipo="text"
                   dados={person}

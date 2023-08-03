@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormControl, FormControlLabel, Checkbox } from '@mui/material';
 import Condicional from '../Condicional/Condicional';
+import MaskedInput, { Mask } from 'react-text-mask';
+import * as Styled from './styles';
 
 interface mapKeyPressInterface {
   key: string
@@ -21,10 +23,10 @@ interface ComTextInterface {
   iconeStart?: string
   onClickIconeStart?: () => void
   mapKeyPress?: Array<mapKeyPressInterface>
-  tipo?: 'text' | 'checkbox',
+  tipo?: 'text' | 'checkbox' | 'mask',
   autofocus?: boolean,
 }
-export default function ComText({
+export default function Text({
   label,
   dados,
   field,
@@ -42,13 +44,17 @@ export default function ComText({
   autofocus = false,
 }: ComTextInterface) {
 
+  const maskCEP: Mask | ((value: string) => Mask) = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]
+  const maskCNPJ: Mask | ((value: string) => Mask) = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  const maskCPF: Mask | ((value: string) => Mask) = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (autofocus && inputRef.current) {
       inputRef.current.focus()
     }
-  }, [])
+  }, [autofocus])
 
   const onKey = (key: string) => {
     if (mapKeyPress.length > 0) {
@@ -57,9 +63,6 @@ export default function ComText({
         if (mapKeyPress[contador].key === key) {
           encontrou = true
           mapKeyPress[contador].onKey()
-        }
-        if (inputRef.current) {
-          inputRef.current.focus();
         }
       }
     }
@@ -126,6 +129,39 @@ export default function ComText({
           <Condicional condicao={typeof erros[field] !== 'undefined'}>
             <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
           </Condicional>
+        </FormControl>
+      </>
+    )
+  } else if (tipo === 'mask') {
+    return (
+      <>
+        <FormControl sx={{ width: '100%' }}>
+          <Typography
+            variant='body2'
+            textAlign='left'
+            sx={{ mt: 1 }}
+          >
+            {label}
+          </Typography>
+          <Styled.TextCustom>
+            <MaskedInput
+              id='Mask'
+              mask={(field === 'cep') ? maskCEP : (field === 'cpf') ? maskCPF : maskCNPJ}
+              guide={false} // Define se a máscara é um guia rígido ou não
+              keepCharPositions={true} // Mantém as posições dos caracteres em branco
+              showMask // Mostra a máscara mesmo sem foco
+              value={dados[field]}
+              placeholder={placeholder}
+              disabled={disabled}
+              type={type}
+              onChange={(e) => setState({ ...dados, [field]: e.target.value })}
+              autoFocus={autofocus}
+            />
+          </Styled.TextCustom>
+          <Condicional condicao={typeof erros[field] !== 'undefined'}>
+            <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
+          </Condicional>
+
         </FormControl>
       </>
     )

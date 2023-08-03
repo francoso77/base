@@ -6,7 +6,7 @@ interface ButtonProps {
   hoverColor: string;
   children: any;
 }
-export const ComButton: React.FC<ButtonProps> = ({ bgColor, hoverColor, children }) => {
+export const Button: React.FC<ButtonProps> = ({ bgColor, hoverColor, children }) => {
   return (
     <Styled.ButtonCustom bgColor={bgColor} hoverColor={hoverColor}>
       {children}

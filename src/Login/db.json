@@ -84,6 +84,19 @@
       "cidade": "Centro",
       "uf": "MG",
       "ativo": true
+    },
+    {
+      "idPerson": 6,
+      "name": "Joao do Guido",
+      "category": 1,
+      "cpf": "007.323.026-09",
+      "cep": "35501506",
+      "endereco": "Rodovia BR-494",
+      "numero": "13700",
+      "bairro": "Padre Herculano Yanes",
+      "cidade": "Padre Herculano Yanes",
+      "uf": "MG",
+      "ativo": true
     }
   ],
   "MenuDto": [
