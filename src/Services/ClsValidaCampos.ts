@@ -67,24 +67,24 @@ export default class ClsValidaCampo {
      */
 
     public eCEP(_eCEP: string): boolean {
-        
+
         let CEP_ATIVO: boolean = false
-        console.log('cep antes ', CEP_ATIVO )
+        console.log('cep antes ', CEP_ATIVO)
         if (this.campoVazio(_eCEP) === true) {
             return CEP_ATIVO
         }
         else {
-            this.verificaCEP(_eCEP).then (temCep =>{
-                if (temCep){
+            this.verificaCEP(_eCEP).then(temCep => {
+                if (temCep) {
                     expCEP.test(_eCEP)
                     console.log(temCep)
                     console.log(expCEP.test(_eCEP))
-                    CEP_ATIVO =  true
+                    CEP_ATIVO = true
                 } else {
-                    CEP_ATIVO =  false
+                    CEP_ATIVO = false
                 }
 
-            }).catch (err =>{
+            }).catch(err => {
                 console.log(err)
                 CEP_ATIVO = false
             })
@@ -115,7 +115,6 @@ export default class ClsValidaCampo {
      * @returns Retorna se o campo UF está correto
      */
     public eUF(_eUF: string): boolean {
-        console.log(_eUF)
         if (this.campoVazio(_eUF) === true) {
             return false
         }

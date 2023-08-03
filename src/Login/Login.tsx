@@ -136,6 +136,7 @@ export default function Login() {
                                 field='usuario'
                                 label='Usuário'
                                 setState={setUsuarioState}
+                                autofocus
                             />
 
                             <ComText

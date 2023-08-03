@@ -21,75 +21,69 @@
   ],
   "person": [
     {
+      "idPerson": 1,
+      "name": "Frank Alves dos Santos",
+      "category": 1,
+      "cpf": "007.323.026-09",
+      "ativo": "true",
+      "cep": "35.500-530",
+      "endereco": "Rua Argentina",
+      "numero": "1290",
+      "bairro": "Santa Rosa",
+      "cidade": "Divinópolis",
+      "uf": "Mg"
+    },
+    {
       "idPerson": 2,
-      "name": "Cemig",
-      "category": 0
+      "name": "Ana Clara Alves",
+      "category": 0,
+      "cpf": "007.323.026-09",
+      "ativo": "true",
+      "cep": "35.500-530",
+      "endereco": "Rua Argentina",
+      "numero": "1290",
+      "bairro": "Santa Rosa",
+      "cidade": "Divinópolis",
+      "uf": "Mg"
     },
     {
       "idPerson": 3,
-      "name": "Simples",
-      "category": 0
+      "name": "Leidiane Neves Campos",
+      "category": 0,
+      "cpf": "007.323.026-09",
+      "ativo": true,
+      "cep": "35.500-530",
+      "endereco": "Rua Argentina",
+      "numero": "1290",
+      "bairro": "Santa Rosa",
+      "cidade": "Divinópolis",
+      "uf": "Mg"
     },
     {
       "idPerson": 4,
-      "name": "Salários",
-      "category": 0
+      "name": "Maria Aparecida dos Santos",
+      "category": 1,
+      "cpf": "00732302609",
+      "cep": "35500155",
+      "endereco": "Avenida JK",
+      "numero": "1690",
+      "bairro": "Bom Pastor",
+      "cidade": "Bom Pastor",
+      "uf": "MG",
+      "ativo": true
     },
     {
       "idPerson": 5,
-      "name": "Totvs",
-      "category": 0
-    },
-    {
-      "idPerson": 6,
-      "name": "Gpc",
-      "category": 0
-    },
-    {
-      "idPerson": 7,
-      "name": "Ronaldo Adriano",
-      "category": 1
-    },
-    {
-      "idPerson": 8
-    },
-    {
-      "idPerson": 9
-    },
-    {
-      "idPerson": 10,
-      "name": "sdgdfgdsfgfdg",
-      "category": 0
-    },
-    {
-      "idPerson": 11,
-      "name": "13213213 dsgfdgdfgf",
-      "category": 0
-    },
-    {
-      "idPerson": 12,
-      "name": "ddfadfdfasdff",
-      "category": 0
-    },
-    {
-      "idPerson": 13,
-      "name": "asfasfsfdfs",
-      "category": 0
-    },
-    {
-      "idPerson": 14,
-      "name": "daffdsfadsf",
-      "category": 0
-    },
-    {
-      "idPerson": 15,
-      "name": "sdfgsdfgsdfgdfg",
-      "category": 0
-    },
-    {
-      "idPerson": 16,
-      "name": "12313",
-      "category": 0
+      "name": "Anderson Silva",
+      "category": 0,
+      "cpf": "00732302609",
+      "cep": "35500002",
+      "endereco": "Avenida Primeiro de Junho",
+      "numero": "135",
+      "bairro": "Centro",
+      "cidade": "Centro",
+      "uf": "MG",
+      "ativo": true
     }
   ],
   "MenuDto": [

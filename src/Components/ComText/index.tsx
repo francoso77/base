@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormControl, FormControlLabel, Checkbox } from '@mui/material';
 import Condicional from '../Condicional/Condicional';
 
@@ -39,8 +39,16 @@ export default function ComText({
   mapKeyPress = [],
   tipo = 'text',
   erros = {},
-  autofocus = false
+  autofocus = false,
 }: ComTextInterface) {
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (autofocus && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
 
   const onKey = (key: string) => {
     if (mapKeyPress.length > 0) {
@@ -49,6 +57,9 @@ export default function ComText({
         if (mapKeyPress[contador].key === key) {
           encontrou = true
           mapKeyPress[contador].onKey()
+        }
+        if (inputRef.current) {
+          inputRef.current.focus();
         }
       }
     }
@@ -77,6 +88,7 @@ export default function ComText({
         <FormControlLabel
           sx={{ width: '100%' }}
           label={label}
+          labelPlacement='top'
           control={
             <Checkbox
               checked={dados[field]}
@@ -109,6 +121,7 @@ export default function ComText({
             startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
             onKeyDown={(ev) => onKey(ev.key)}
             autoFocus={autofocus}
+            inputRef={inputRef}
           />
           <Condicional condicao={typeof erros[field] !== 'undefined'}>
             <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
