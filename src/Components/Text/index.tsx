@@ -54,7 +54,7 @@ export default function Text({
     if (autofocus && inputRef.current) {
       inputRef.current.focus()
     }
-  }, [autofocus])
+  }, [autofocus, setState])
 
   const onKey = (key: string) => {
     if (mapKeyPress.length > 0) {

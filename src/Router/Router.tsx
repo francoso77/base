@@ -5,6 +5,7 @@ import ErroAplicacao from '../Layout/ErroAplicacao';
 import Person from '../views/Person/Person';
 import ErroNavegacao from '../Layout/ErroNavegacao';
 import Layout from '../Layout/Layout';
+import Ordem from '../views/Ordem/Ordem';
 
 export const router = createBrowserRouter([
   {
@@ -15,6 +16,11 @@ export const router = createBrowserRouter([
       {
         path: "person",
         element: <Person />,
+        errorElement: <ErroAplicacao />
+      },
+      {
+        path: "ordem",
+        element: <Ordem />,
         errorElement: <ErroAplicacao />
       },
     ],

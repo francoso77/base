@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { tableCellClasses, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Box } from '@mui/material'
+import { tableCellClasses, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import TablePagination from '@mui/material/TablePagination'
 import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,10 +7,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles'
 import Condicional from '../Condicional/Condicional';
 
-type Order = 'asc' | 'desc';
-
 export interface DataTableCabecalhoInterface {
   campo: string
+  //caca: keyof string
   cabecalho: string
   alinhamento?: 'left' | 'right' | 'center'
   largura?: number
@@ -18,13 +17,10 @@ export interface DataTableCabecalhoInterface {
 }
 
 export interface DataTableInterface {
-  dados: any[]
+  dados: Array<{ [key: string]: number | string }> | Array<Object>
   cabecalho: Array<DataTableCabecalhoInterface>
   onEditar?: (arg?: any) => void
   onExcluir?: (arg?: any) => void
-  onRequestSort?: (event: React.MouseEvent<unknown>, property: keyof any) => void;
-  order: Order;
-  orderBy: string | number | symbol;
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -49,52 +45,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
 export default function DataTable({
   dados = [],
   cabecalho = [],
   onEditar,
-  onExcluir,
-  onRequestSort,
-  order,
-  orderBy,
+  onExcluir
 }: DataTableInterface) {
 
   const [page, setPage] = useState(0)
@@ -109,22 +64,6 @@ export default function DataTable({
     setPage(0)
   }
 
-  const createSortHandler =
-    (property: keyof any) => (event: React.MouseEvent<unknown>) => {
-      if (typeof onRequestSort == 'function') {
-        onRequestSort(event, property);
-      }
-    }
-
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(dados, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rowsPerPage],
-  );
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -135,15 +74,8 @@ export default function DataTable({
                 <StyledTableCell
                   key={indice}
                   style={{ minWidth: coluna.largura }}
-                  sortDirection={orderBy === coluna.campo ? order : false}
                 >
-                  <TableSortLabel
-                    active={orderBy === coluna.campo}
-                    direction={orderBy === coluna.campo ? order : 'asc'}
-                    onClick={createSortHandler(coluna.campo)}
-                  >
-                    {coluna.cabecalho}
-                  </TableSortLabel>
+                  {coluna.cabecalho}
                 </StyledTableCell>
               ))}
 
@@ -155,8 +87,8 @@ export default function DataTable({
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {visibleRows
-              //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            {dados
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, indice) => {
 
                 return (

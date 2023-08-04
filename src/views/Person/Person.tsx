@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { URL_SERVIDOR } from '../../Config/Setup';
 import Button from '@mui/material/Button';
 import { Box, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Typography } from '@mui/material';
@@ -14,6 +14,7 @@ import DataTable, { DataTableCabecalhoInterface } from '../../Components/DataTab
 import ApiCls from '../../Services/ApiCls';
 import ClsValidaCampo from '../../Services/ClsValidaCampos';
 import Condicional from '../../Components/Condicional/Condicional';
+import { Order } from '../Ordem/Ordem';
 
 const TEMPO_REFRESH_TEMPORARIO = 500
 
@@ -71,6 +72,8 @@ export default function Person() {
   const [person, setPerson] = useState<PersonInterface>(ResetDados)
   const [erros, setErros] = useState({})
   const categorys = ['Despesas', 'Receitas']
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof any>('name');
 
   const handleChangeCategory = (event: SelectChangeEvent) => {
     let cat: number = parseInt(event.target.value as string)
@@ -132,7 +135,6 @@ export default function Person() {
       retorno = false
       erros.cpf = 'CPF inválido!'
     }
-
     setErros(erros)
     return retorno
   }
@@ -144,7 +146,7 @@ export default function Person() {
       let msg2: string = ''
       let msg3: string = 'Cadastro de Pessoas não atualizado!'
       let url_ativa: string = '/person/'.concat(person.idPerson.toString())
-      let body: PersonInterface | string = person
+      let body: any = person
 
       if (localState.action === actionTypes.incluindo) {
         msg1 = 'Incluíndo dados em Pessoa...'
@@ -223,65 +225,43 @@ export default function Person() {
   }
 
   const btPesquisar = () => {
-    setMensagemState({
-      ...mensagemState,
-      titulo: 'Processando',
-      mensagem: 'Recebendo Pessoas ...',
-      exibir: true,
-      tipo: MensagemTipo.Loading,
-      exibirBotao: false,
-      cb: null
-    })
 
     setTimeout(() => {
-
-      fetch(URL_SERVIDOR.concat('/person?name_like='.concat(pesquisa.nome)), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET'
-      }).then(rs => {
-
-        if (rs.ok) {
+      api.pesq<any>('/person?name_like='.concat(pesquisa.nome), 'Recebendo Pessoas ...', mensagemState, setMensagemState)
+        .then(rs => {
+          setRsPesquisa(rs)
           setMensagemState({
             ...mensagemState,
             exibir: false,
             mensagem: ''
           })
-          return rs.json()
+        }).catch(() => {
 
-        } else {
           setMensagemState({
             ...mensagemState,
-            titulo: 'Erro! Consulte Suporte!',
             exibir: true,
-            mensagem: 'Erro ao consultar Pessoas!',
+            mensagem: 'Erro na conexão com o bando de dados!',
             tipo: MensagemTipo.Error,
             exibirBotao: true
           })
-        }
-      }).then((rsPerson: PersonInterface[]) => {
-
-        setRsPesquisa(rsPerson)
-
-      }).catch(() => {
-        setMensagemState({
-          ...mensagemState,
-          exibir: true,
-          mensagem: 'Erro na conexão com o bando de dados!',
-          tipo: MensagemTipo.Error,
-          exibirBotao: true
         })
-      })
-
-    }, TEMPO_REFRESH_TEMPORARIO)
-
+    }, TEMPO_REFRESH_TEMPORARIO);
   }
+
   const irpara = useNavigate()
 
   const btFechar = () => {
     irpara('/')
   }
+
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: keyof any,
+  ) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
   return (
     <>
@@ -473,6 +453,10 @@ export default function Person() {
                   cabecalho={Cabecalho}
                   onEditar={btEditar}
                   onExcluir={btExcluir}
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                //rowCount={rows.length}
                 />
               </Grid>
             </Condicional>
