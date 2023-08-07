@@ -2,7 +2,6 @@ import React from "react";
 import { URL_SERVIDOR } from '../Config/Setup';
 import { MensagemStateInterface, MensagemTipo } from '../Context/MensagemState';
 import { ActionInterface, actionTypes } from '../interfaces/ActionInterface';
-import { PersonInterface } from '../interfaces/PersonInterface';
 
 export enum MetodoTipo {
     GET = 'GET',

@@ -1,5 +1,4 @@
-import { useContext, useRef, useState } from 'react';
-import { URL_SERVIDOR } from '../../Config/Setup';
+import { useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import { Box, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Typography } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -42,6 +41,7 @@ export default function Person() {
       campo: 'category',
       cabecalho: 'Categoria',
       alinhamento: 'left',
+      format: (v: number) => { return v === 0 ? 'Despesas' : 'Receitas' }
     },
     {
       campo: 'ativo',
@@ -204,14 +204,28 @@ export default function Person() {
         if (temCep) {
           person.endereco = validaCampo.tmp_eCEP.logradouro
           person.bairro = validaCampo.tmp_eCEP.bairro
-          person.cidade = validaCampo.tmp_eCEP.bairro
+          person.cidade = validaCampo.tmp_eCEP.localidade
           person.uf = validaCampo.tmp_eCEP.uf
+          setMensagemState({
+            ...mensagemState,
+            exibir: false,
+            mensagem: ''
+          })
+        } else {
+          person.endereco = ''
+          person.bairro = ''
+          person.cidade = ''
+          person.uf = ''
+          setMensagemState({
+            ...mensagemState,
+            titulo: 'Não Encontrado',
+            mensagem: 'CEP inexistente...',
+            exibir: true,
+            tipo: MensagemTipo.Error,
+            exibirBotao: true,
+            cb: null
+          })
         }
-        setMensagemState({
-          ...mensagemState,
-          exibir: false,
-          mensagem: ''
-        })
       })
       .catch(() => {
         setMensagemState({
@@ -339,7 +353,7 @@ export default function Person() {
               <Grid item xs={12} sm={3}>
                 <Text
                   label="CEP"
-                  tipo="text"
+                  tipo="mask"
                   dados={person}
                   field="cep"
                   setState={setPerson}
@@ -456,7 +470,6 @@ export default function Person() {
                   order={order}
                   orderBy={orderBy}
                   onRequestSort={handleRequestSort}
-                //rowCount={rows.length}
                 />
               </Grid>
             </Condicional>

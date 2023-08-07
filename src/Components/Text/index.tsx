@@ -151,11 +151,22 @@ export default function Text({
               keepCharPositions={true} // Mantém as posições dos caracteres em branco
               showMask // Mostra a máscara mesmo sem foco
               value={dados[field]}
+              onChange={(e) => setState({ ...dados, [field]: e.target.value })}
+              autoFocus={autofocus}
               placeholder={placeholder}
               disabled={disabled}
               type={type}
-              onChange={(e) => setState({ ...dados, [field]: e.target.value })}
-              autoFocus={autofocus}
+
+              render={(ref, props) => (
+                <OutlinedInput
+                  {...props}
+                  sx={{ my: 0, py: 0, height: 40 }}
+                  endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
+                  startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
+                  onKeyDown={(ev) => onKey(ev.key)}
+                  inputRef={ref}
+                />
+              )}
             />
           </Styled.TextCustom>
           <Condicional condicao={typeof erros[field] !== 'undefined'}>

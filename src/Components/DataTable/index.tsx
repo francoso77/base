@@ -116,15 +116,6 @@ export default function DataTable({
       }
     }
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(dados, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rowsPerPage],
-  );
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -155,8 +146,7 @@ export default function DataTable({
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {visibleRows
-              //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            {stableSort(dados, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, indice) => {
 
                 return (
@@ -164,7 +154,9 @@ export default function DataTable({
                     {
                       cabecalho.map((coluna, indice) => {
                         return (
-                          <StyledTableCell key={indice} align={coluna.alinhamento ? coluna.alinhamento : 'left'}>
+                          <StyledTableCell
+                            key={indice}
+                            align={coluna.alinhamento ? coluna.alinhamento : 'left'}>
                             {coluna.format ? coluna.format((row as any)[coluna.campo]) : (row as any)[coluna.campo]}
                           </StyledTableCell>
                         )
