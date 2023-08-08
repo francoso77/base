@@ -3,6 +3,7 @@ import { OutlinedInput, Typography, IconButton, InputAdornment, Icon, FormContro
 import Condicional from '../Condicional/Condicional';
 import MaskedInput, { Mask } from 'react-text-mask';
 import * as Styled from './styles';
+import Currency from '../Currency';
 
 interface mapKeyPressInterface {
   key: string
@@ -23,7 +24,7 @@ interface ComTextInterface {
   iconeStart?: string
   onClickIconeStart?: () => void
   mapKeyPress?: Array<mapKeyPressInterface>
-  tipo?: 'text' | 'checkbox' | 'mask',
+  tipo?: 'text' | 'checkbox' | 'mask' | 'valor',
   autofocus?: boolean,
 }
 export default function Text({
@@ -173,6 +174,36 @@ export default function Text({
             <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
           </Condicional>
 
+        </FormControl>
+      </>
+    )
+  } else if (tipo === 'valor') {
+    return (
+      <>
+        <FormControl sx={{ width: '100%' }}>
+          <Typography
+            variant='body2'
+            textAlign='left'
+            sx={{ mt: 1 }}
+          >
+            {label}
+          </Typography>
+          <OutlinedInput
+            value={dados[field]}
+            sx={{ my: 0, py: 0, height: 40 }}
+            placeholder={placeholder}
+            disabled={disabled}
+            type={type}
+            onChange={(e) => setState({ ...dados, [field]: e.target.value + 20 })}
+            endAdornment={exibirIcone('end', iconeEnd, onClickIconeEnd)}
+            startAdornment={exibirIcone('start', iconeStart, onClickIconeStart)}
+            onKeyDown={(ev) => onKey(ev.key)}
+            autoFocus={autofocus}
+          />
+
+          <Condicional condicao={typeof erros[field] !== 'undefined'}>
+            <Typography variant='caption' textAlign='left' color='warning.main' >{erros[field]}</Typography>
+          </Condicional>
         </FormControl>
       </>
     )

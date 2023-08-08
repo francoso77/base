@@ -123,6 +123,19 @@
       "cidade": "Divinópolis",
       "uf": "MG",
       "ativo": true
+    },
+    {
+      "idPerson": 9,
+      "name": "Anabio Walfrido",
+      "category": 0,
+      "cpf": "007.323.026-09",
+      "cep": "35.501-155",
+      "endereco": "Avenida dos Buritis",
+      "numero": "[object Object]x",
+      "bairro": "Costa Azul",
+      "cidade": "Divinópolis",
+      "uf": "MG",
+      "ativo": true
     }
   ],
   "MenuDto": [
