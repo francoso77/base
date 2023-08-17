@@ -13,7 +13,7 @@ import DataTable, { DataTableCabecalhoInterface } from '../../Components/DataTab
 import ApiCls from '../../Services/ApiCls';
 import ClsValidaCampo from '../../Services/ClsValidaCampos';
 import Condicional from '../../Components/Condicional/Condicional';
-import { Order } from '../Ordem/Ordem';
+import { Order } from '../../teste_apagar/Ordem_old';
 
 const TEMPO_REFRESH_TEMPORARIO = 500
 

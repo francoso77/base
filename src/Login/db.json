@@ -99,19 +99,6 @@
       "ativo": false
     },
     {
-      "idPerson": 7,
-      "name": "Teste de cadastro de pessoas",
-      "category": 0,
-      "cpf": "007.323.026-09",
-      "cep": "35501506",
-      "endereco": "Rodovia BR-494",
-      "numero": "13700",
-      "bairro": "Padre Herculano Yanes",
-      "cidade": "Divinópolis",
-      "uf": "MG",
-      "ativo": false
-    },
-    {
       "idPerson": 8,
       "name": "Janete Clear",
       "category": 0,
@@ -119,6 +106,19 @@
       "cep": "35.500-002",
       "endereco": "Avenida Primeiro de Junho",
       "numero": "1690",
+      "bairro": "Centro",
+      "cidade": "Divinópolis",
+      "uf": "MG",
+      "ativo": true
+    },
+    {
+      "idPerson": 9,
+      "name": "Teste de Cadastro",
+      "category": 0,
+      "cpf": "007.323.026-09",
+      "cep": "35.500-012",
+      "endereco": "Rua Sergipe",
+      "numero": "155",
       "bairro": "Centro",
       "cidade": "Divinópolis",
       "uf": "MG",
