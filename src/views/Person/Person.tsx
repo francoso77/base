@@ -378,7 +378,7 @@ export default function Person() {
               <Grid item xs={12} sm={2}>
                 <Text
                   label="Número"
-                  tipo="text"
+                  tipo="valor"
                   dados={person}
                   field="numero"
                   setState={setPerson}
